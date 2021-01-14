@@ -1,6 +1,7 @@
 #include <iostream>
 #include "opengl_framework.h"
 #include "shaders/simple_triangle.h"
+#include "shader_program.h"
 
 using namespace std;
 
@@ -35,74 +36,18 @@ int main()
 
     // normalized device coords - from -1 to 1 ---> NDC
 
-    auto checkShaderCompilation = [](unsigned int shaderId) -> bool {
-        int success{};
-        char infoLog[512];
-        glGetShaderiv(shaderId, GL_COMPILE_STATUS, &success);
-        if (success == GL_FALSE)
-        {
-            glGetShaderInfoLog(shaderId, 512, NULL, infoLog);
-            std::cout << "compilation error for shader: id = " << shaderId << ", " << infoLog << std::endl;
-        }
-        else
-        {
-            std::cout << "shader compilation success, id = " << shaderId << std::endl;
-        }
-        return success == GL_TRUE;
-    };
 
+    ShaderProgram sp;
 
     std::cout << "start create vertex shader" << std::endl;
-    unsigned int vertexShader{};
-    {
-        vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const char* data = simpleTriangleVertexShaderText.data();
-        glShaderSource(vertexShader, 1/*count of strings*/,
-                       &data, NULL);
-        glCompileShader(vertexShader);
-        if (! checkShaderCompilation(vertexShader))
-        {
-            return -1;
-        }
-    }
+    sp.createVertexShader(simpleTriangleVertexShaderText.data());
+
 
     std::cout << "start create fragment shader" << std::endl;
-    unsigned int fragmentShader{};
-    {
-        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const char* data = simpleTriangleFragmentShaderText.data();
-        glShaderSource(fragmentShader, 1, &data, NULL);
-        glCompileShader(fragmentShader);
-        if (! checkShaderCompilation(fragmentShader))
-        {
-            return -1;
-        }
-    }
+    sp.createFragmentShader(simpleTriangleFragmentShaderText.data());
 
     std::cout << "start create program" << std::endl;
-    unsigned int shaderProgram{};
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    {
-        int success{};
-        char infoLog[512];
-        glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-        if (success == GL_FALSE)
-        {
-            glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-            std::cout << "link error for program: id = " << shaderProgram << ", " << infoLog << std::endl;
-            return -1;
-        }
-        else
-        {
-            std::cout << "program link success" << std::endl;
-        }
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    sp.link();
 
     float vertices[] = {
         -0.5f, -0.5f, 0.0f,
@@ -141,9 +86,9 @@ int main()
     glBindVertexArray(0);
 
 
-    auto func = [=]()
+    auto func = [=, &sp]()
     {
-        glUseProgram(shaderProgram);
+        sp.use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3); // 0 - start index, 3 - count of vertices
     };
@@ -153,7 +98,6 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
 
     return 0;
 }
