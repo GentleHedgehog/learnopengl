@@ -9,6 +9,7 @@ add_executable(${PROJECT_NAME}
     main.cpp
     glad/src/glad.c glad/include/glad/glad.h
     glad/include/KHR/khrplatform.h
+    opengl_framework.cpp opengl_framework.h
     )
 
 target_include_directories(${PROJECT_NAME}
