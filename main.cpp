@@ -11,6 +11,14 @@ void framebuffer_size_callback(GLFWwindow* w, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+void processInput(GLFWwindow* w)
+{
+    if (glfwGetKey(w, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(w, true);
+    }
+}
+
 }//nm
 
 int main()
@@ -42,8 +50,15 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        glfwSwapBuffers(window); // front and back buffers
+        processInput(window);
+
+        // rendering
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // choose color (state settings func)
+        glClear(GL_COLOR_BUFFER_BIT); // clear color buffer (state using func)
+
+
         glfwPollEvents();
+        glfwSwapBuffers(window); // front and back buffers
     }
 
 //    getchar();
