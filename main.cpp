@@ -4,6 +4,15 @@
 
 using namespace std;
 
+namespace  {
+
+void framebuffer_size_callback(GLFWwindow* w, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+}//nm
+
 int main()
 {
     glfwInit();
@@ -28,8 +37,18 @@ int main()
         return -1;
     }
 
-    getchar();
+    glViewport(0, 0, 800, 600); // inside window, coords: (-1, 1) -> (0, 800) or (0, 600)
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    while (!glfwWindowShouldClose(window))
+    {
+        glfwSwapBuffers(window); // front and back buffers
+        glfwPollEvents();
+    }
+
+//    getchar();
 //    cout << "Hello World!" << endl;
+
+    glfwTerminate();
     return 0;
 }
