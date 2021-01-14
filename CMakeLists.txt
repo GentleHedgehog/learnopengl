@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME}
     glad/include/KHR/khrplatform.h
     opengl_framework.cpp opengl_framework.h
     shader_program.cpp shader_program.h
+    triangles_drawer.cpp triangles_drawer.h
     shaders/simple_triangle.h
     )
 
