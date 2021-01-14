@@ -1,7 +1,5 @@
 #include "opengl_framework.h"
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 using namespace std;
 
@@ -24,7 +22,11 @@ void processInput(GLFWwindow* w)
 
 OpenglFramework::OpenglFramework()
 {
-    glfwInit();
+    auto res = glfwInit();
+    if (res != GLFW_TRUE)
+    {
+        throw std::logic_error("glfw init fail");
+    }
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -36,13 +38,18 @@ OpenglFramework::~OpenglFramework()
     glfwTerminate();
 }
 
-bool OpenglFramework::initialize()
+bool OpenglFramework::createWindowAsCurrentContext()
 {
-    GLFWwindow* window = glfwCreateWindow(800, 600, "learn opengl", NULL, NULL);
+    if (window)
+    {
+        std::cout << "window was already created" << std::endl;
+        return true;
+    }
+
+    window = glfwCreateWindow(800, 600, "learn opengl", NULL, NULL);
     if (! window)
     {
-        std::cout << "failed" << std::endl;
-        glfwTerminate();
+        std::cout << "window creation failed" << std::endl;
         return false;
     }
 
@@ -55,9 +62,20 @@ bool OpenglFramework::initialize()
         return false;
     }
 
-
     glViewport(0, 0, 800, 600); // inside window, coords: (-1, 1) -> (0, 800) or (0, 600)
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+    return true;
+}
+
+void OpenglFramework::run(CustomFunc f)
+{
+    if (! window)
+    {
+//        std::cout << "cannot run without window" << std::endl;
+//        return;
+        throw std::logic_error("cannot run without window");
+    }
 
     while (!glfwWindowShouldClose(window))
     {
@@ -67,12 +85,11 @@ bool OpenglFramework::initialize()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // choose color (state settings func)
         glClear(GL_COLOR_BUFFER_BIT); // clear color buffer (state using func)
 
+        f();
 
         glfwPollEvents();
         glfwSwapBuffers(window); // front and back buffers
     }
-
-    return true;
 }
 
 
