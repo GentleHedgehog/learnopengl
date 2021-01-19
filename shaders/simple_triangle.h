@@ -16,6 +16,7 @@ R"(
 )";
 
 
+// orange color:
 std::string simpleTriangleFragmentShaderText =
 R"(
         #version 330 core
