@@ -8,7 +8,8 @@
 ShadersExample::ShadersExample()
 {    
 //    transferColorExample();
-    uniformColorExample();
+//    uniformColorExample();
+    moreAttributesExample();
 }
 
 void ShadersExample::transferColorExample()
@@ -31,12 +32,12 @@ void ShadersExample::transferColorExample()
     };
 
 
-    td.prepareToDraw(vertices, indices);
+    tdEbo.prepareToDraw(vertices, indices);
 
     cb = [this]()
     {
         sp.use();
-        td.execute();
+        tdEbo.execute();
     };
 }
 
@@ -60,7 +61,7 @@ void ShadersExample::uniformColorExample()
     };
 
 
-    td.prepareToDraw(vertices, indices);
+    tdEbo.prepareToDraw(vertices, indices);
 
 
     cb = [this]()
@@ -75,9 +76,34 @@ void ShadersExample::uniformColorExample()
         glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
         // render:
+        tdEbo.execute();
+    };
+}
+
+void ShadersExample::moreAttributesExample()
+{
+    sp.createAndLink(moreAttributesVS, moreAttributesFS);
+
+    float vertices[] = {
+        // positions        // colors
+        0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
+        0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f // top
+    };
+
+    TrianglesDrawer::Attributes attr;
+    attr.addAttribute(0, 3, 0);
+    attr.addAttribute(1, 3, 3);
+
+    td.prepareToDraw(vertices, attr);
+
+    cb = [this]()
+    {
+        sp.use();
         td.execute();
     };
 }
+
 
 void ShadersExample::operator()()
 {

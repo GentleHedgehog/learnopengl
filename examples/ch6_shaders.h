@@ -15,7 +15,8 @@ public:
 
 private:
     ShaderProgram sp;
-    TrianglesDrawerEBO td;
+    TrianglesDrawerEBO tdEbo;
+    TrianglesDrawer td;
 
     using CustomFunc = std::function<void()>;
     CustomFunc cb = nullptr;
@@ -23,5 +24,6 @@ private:
     void transferColorExample();
     void uniformColorExample();
 
+    void moreAttributesExample();
 };
 

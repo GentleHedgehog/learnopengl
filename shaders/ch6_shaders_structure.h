@@ -69,6 +69,7 @@
 
 #include <string>
 
+// ------- transfer vars:
 
 std::string transferVarVS =
 R"(
@@ -94,6 +95,8 @@ R"(
         }
 )";
 
+// ------- uniform vars:
+
 
 std::string uniformVarFS =
 R"(
@@ -103,5 +106,36 @@ R"(
         void main()
         {
             FragColor = ourColor;
+        }
+)";
+
+
+// ------- transfer vars:
+
+// vertex1      vertex2
+// xyz rgb      xyz rgb
+
+std::string moreAttributesVS =
+R"(
+        #version 330 core
+        layout (location = 0) in vec3 aPos; // attrib pos 0
+        layout (location = 1) in vec3 aColor; // attrib pos 1
+        out vec3 transColor;
+        void main()
+        {
+            gl_Position = vec4(aPos, 1.0f);
+            transColor = aColor;
+        }
+)";
+
+
+std::string moreAttributesFS =
+R"(
+        #version 330 core
+        in vec3 transColor;
+        out vec4 FragColor;
+        void main()
+        {
+            FragColor = vec4(transColor, 1.0);
         }
 )";
