@@ -68,12 +68,19 @@ bool OpenglFramework::createWindowAsCurrentContext()
     return true;
 }
 
+void OpenglFramework::printNumberOfAttributes()
+{
+    GLint nrAtt{};
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAtt);
+    std::cout << "max num of vertex attribs supported: " << nrAtt << std::endl;
+}
+
 void OpenglFramework::run(CustomFunc f)
 {
     if (! window)
     {
-//        std::cout << "cannot run without window" << std::endl;
-//        return;
+        //        std::cout << "cannot run without window" << std::endl;
+        //        return;
         throw std::logic_error("cannot run without window");
     }
 

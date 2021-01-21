@@ -10,6 +10,8 @@ public:
     ~OpenglFramework();
     bool createWindowAsCurrentContext();
 
+    void printNumberOfAttributes();
+
     using CustomFunc = std::function<void()>;
     void run(CustomFunc f);
 private:

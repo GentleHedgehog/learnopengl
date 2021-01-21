@@ -99,6 +99,17 @@ bool ShaderProgram::link()
     return true;
 }
 
+bool ShaderProgram::createAndLink(const std::string &vertexShaderSource, const std::string &fragmentShaderSource)
+{
+    if (! createVertexShader(vertexShaderSource.data()))
+        return false;
+
+    if (! createFragmentShader(fragmentShaderSource.data()))
+        return false;
+
+    return link();
+}
+
 void ShaderProgram::use()
 {
     assert(isLinked);

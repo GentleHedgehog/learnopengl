@@ -13,9 +13,12 @@ add_executable(lessonProgram
     shader_program.cpp shader_program.h
     triangles_drawer.cpp triangles_drawer.h
     shaders/simple_triangle.h
+    shaders/shaders_chapter.h
+    examples/hello_triangle.cpp examples/hello_triangle.h
     )
 
 target_include_directories(lessonProgram
+    PRIVATE "."
     PRIVATE "glad/include"
     PRIVATE "D:/Soft/Programming/OpenGL/glfw-3.3.2/include")
 
