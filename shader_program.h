@@ -14,6 +14,11 @@ public:
 //    ShaderProgram(ShaderProgram&& other) = delete;
 //    ShaderProgram& operator=(ShaderProgram&&) = delete;
 
+    std::optional<unsigned int> getId()
+    {
+        return shaderProgram;
+    }
+
     bool createAndLink(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
 
     bool createVertexShader(const char* sourceCode);

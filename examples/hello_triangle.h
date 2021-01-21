@@ -3,6 +3,7 @@
 #include "shader_program.h"
 #include "triangles_drawer.h"
 
+// Part I, Chapters 5
 
 class HelloTriangle
 {
