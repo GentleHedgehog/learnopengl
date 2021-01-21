@@ -1,7 +1,7 @@
 #include <iostream>
 #include "opengl_framework.h"
 //#include "examples/hello_triangle.h"
-#include "examples/shaders.h"
+#include "examples/ch6_shaders.h"
 
 using namespace std;
 

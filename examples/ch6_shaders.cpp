@@ -1,5 +1,5 @@
-#include "shaders.h"
-#include "shaders/shaders_chapter.h"
+#include "ch6_shaders.h"
+#include "shaders/ch6_shaders_structure.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

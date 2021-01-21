@@ -12,10 +12,10 @@ add_executable(lessonProgram
     opengl_framework.cpp opengl_framework.h
     shader_program.cpp shader_program.h
     triangles_drawer.cpp triangles_drawer.h
-    shaders/simple_triangle.h
-    shaders/shaders_chapter.h
-    examples/hello_triangle.cpp examples/hello_triangle.h
-    examples/shaders.cpp examples/shaders.h
+    shaders/ch5_simple_triangle.h
+    shaders/ch6_shaders_structure.h
+    examples/ch5_hello_triangle.cpp examples/ch5_hello_triangle.h
+    examples/ch6_shaders.cpp examples/ch6_shaders.h
     )
 
 target_include_directories(lessonProgram

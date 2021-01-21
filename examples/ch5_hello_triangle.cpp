@@ -1,5 +1,5 @@
-#include "hello_triangle.h"
-#include "shaders/simple_triangle.h"
+#include "ch5_hello_triangle.h"
+#include "shaders/ch5_simple_triangle.h"
 
 HelloTriangle::HelloTriangle()
 {    
