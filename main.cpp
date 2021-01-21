@@ -1,6 +1,7 @@
 #include <iostream>
 #include "opengl_framework.h"
-#include "examples/hello_triangle.h"
+//#include "examples/hello_triangle.h"
+#include "examples/shaders.h"
 
 using namespace std;
 
@@ -38,10 +39,11 @@ int main()
 
     fw.printNumberOfAttributes();
 
-    HelloTriangle ht;
+//    HelloTriangle ht;
+    ShadersExample se;
 
     std::cout << "start run" << std::endl;
-    fw.run(ht);
+    fw.run(se);
 
     return 0;
 }

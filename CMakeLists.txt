@@ -15,6 +15,7 @@ add_executable(lessonProgram
     shaders/simple_triangle.h
     shaders/shaders_chapter.h
     examples/hello_triangle.cpp examples/hello_triangle.h
+    examples/shaders.cpp examples/shaders.h
     )
 
 target_include_directories(lessonProgram
