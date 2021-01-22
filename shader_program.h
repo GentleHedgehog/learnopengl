@@ -14,6 +14,11 @@ public:
 //    ShaderProgram(ShaderProgram&& other) = delete;
 //    ShaderProgram& operator=(ShaderProgram&&) = delete;
 
+    // to set uniform vars:
+    void setBool(const std::string& name, bool value) const;
+    void setInt(const std::string& name, int value) const;
+    void setFloat(const std::string& name, float value) const;
+
     std::optional<unsigned int> getId()
     {
         return shaderProgram;

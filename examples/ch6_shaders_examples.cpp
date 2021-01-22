@@ -1,18 +1,18 @@
+#include "ch6_shaders_examples.h"
 #include "ch6_shaders.h"
-#include "shaders/ch6_shaders_structure.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
 
-ShadersExample::ShadersExample()
+Ch6_ShadersExamples::Ch6_ShadersExamples()
 {    
 //    transferColorExample();
 //    uniformColorExample();
     moreAttributesExample();
 }
 
-void ShadersExample::transferColorExample()
+void Ch6_ShadersExamples::transferColorExample()
 {
     sp.createAndLink(transferVarVS, transferVarFS);
 
@@ -41,7 +41,7 @@ void ShadersExample::transferColorExample()
     };
 }
 
-void ShadersExample::uniformColorExample()
+void Ch6_ShadersExamples::uniformColorExample()
 {
     sp.createAndLink(transferVarVS, uniformVarFS);
 
@@ -80,7 +80,7 @@ void ShadersExample::uniformColorExample()
     };
 }
 
-void ShadersExample::moreAttributesExample()
+void Ch6_ShadersExamples::moreAttributesExample()
 {
     sp.createAndLink(moreAttributesVS, moreAttributesFS);
 
@@ -105,7 +105,7 @@ void ShadersExample::moreAttributesExample()
 }
 
 
-void ShadersExample::operator()()
+void Ch6_ShadersExamples::operator()()
 {
     if (cb)
     {

@@ -5,10 +5,10 @@
 
 // Part I, Chapters 5
 
-class HelloTriangle
+class Ch5_HelloTriangle
 {
 public:
-    HelloTriangle();
+    Ch5_HelloTriangle();
 
     void operator() ();
 

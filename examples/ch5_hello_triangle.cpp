@@ -1,7 +1,7 @@
 #include "ch5_hello_triangle.h"
-#include "shaders/ch5_simple_triangle.h"
+#include "ch5_shaders.h"
 
-HelloTriangle::HelloTriangle()
+Ch5_HelloTriangle::Ch5_HelloTriangle()
 {    
     sp.createAndLink(simpleTriangleVertexShaderText, simpleTriangleFragmentShaderText);
 
@@ -31,7 +31,7 @@ HelloTriangle::HelloTriangle()
 //    };
 }
 
-void HelloTriangle::operator()()
+void Ch5_HelloTriangle::operator()()
 {
     sp.use();
     td.execute();

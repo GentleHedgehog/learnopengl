@@ -110,8 +110,28 @@ bool ShaderProgram::createAndLink(const std::string &vertexShaderSource, const s
     return link();
 }
 
+void ShaderProgram::setBool(const std::string &name, bool value) const
+{
+    assert(isLinked);
+    glUniform1i(glGetUniformLocation(shaderProgram.value(), name.c_str()), static_cast<int>(value));
+}
+
+void ShaderProgram::setInt(const std::string &name, int value) const
+{
+    assert(isLinked);
+    glUniform1i(glGetUniformLocation(shaderProgram.value(), name.c_str()), value);
+}
+
+void ShaderProgram::setFloat(const std::string &name, float value) const
+{
+    assert(isLinked);
+    glUniform1f(glGetUniformLocation(shaderProgram.value(), name.c_str()), value);
+}
+
 void ShaderProgram::use()
 {
     assert(isLinked);
     glUseProgram(shaderProgram.value());
 }
+
+
