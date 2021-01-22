@@ -123,7 +123,9 @@ R"(
         out vec3 transColor;
         void main()
         {
-            gl_Position = vec4(aPos, 1.0f);
+            // vec3 temp = vec3(aPos.x + 0.5, aPos.yz); // to move to the right
+            gl_Position = vec4(aPos, 1.0f); // upside down - (aPos * -1)
+//            transColor = aPos; // transfer position as a color: negative value are clamped to 0 !
             transColor = aColor;
         }
 )";
