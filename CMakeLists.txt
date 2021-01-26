@@ -14,6 +14,7 @@ add_executable(lessonProgram
     image_framework.cpp image_framework.h
     shader_program.cpp shader_program.h
     triangles_drawer.cpp triangles_drawer.h
+    texture_applier.cpp texture_applier.h
     examples/ch5_hello_triangle.cpp examples/ch5_hello_triangle.h
     examples/ch5_shaders.h
     examples/ch6_shaders_examples.cpp examples/ch6_shaders_examples.h

@@ -6,6 +6,7 @@
 
 #include "shader_program.h"
 #include "triangles_drawer.h"
+#include "texture_applier.h"
 
 // Part I, Chapters 7
 
@@ -19,7 +20,7 @@ public:
 private:
     ShaderProgram sp;
     TrianglesDrawerEBO tdEbo;
-    TrianglesDrawer td;
+    TextureApplier texApplier;
 
     using CustomFunc = std::function<void()>;
     CustomFunc cb = nullptr;

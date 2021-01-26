@@ -85,3 +85,24 @@ R"(
         }
 )";
 
+std::string twoTexturesFS =
+R"(
+        #version 330 core
+
+        out vec4 FragColor;
+
+        in vec3 ourColor;
+        in vec2 TexCoord;
+
+        uniform sampler2D ourTexture1;
+        uniform sampler2D ourTexture2;
+
+        void main()
+        {
+            // mix gets two colors and blend them
+            // (factor: 0 - return first color, 1.0 - second color, 0.2 - 80% first 20% second ??)
+            FragColor = mix(texture(ourTexture1, TexCoord), texture(ourTexture2, TexCoord), 0.2);
+        }
+)";
+
+
