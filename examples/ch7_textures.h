@@ -21,13 +21,13 @@ private:
     ShaderProgram sp;
     TrianglesDrawerEBO tdEbo;
     TextureApplier texApplier;
+    TextureApplier texApplier2;
 
     using CustomFunc = std::function<void()>;
     CustomFunc cb = nullptr;
 
-    void putTextureOnTriangle();
-    void uniformColorExample();
+    void putTextureOnRectangle();
+    void putTwoTexturesOnRectangle();
 
-    void moreAttributesExample();
 };
 

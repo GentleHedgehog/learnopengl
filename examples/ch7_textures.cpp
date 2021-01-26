@@ -10,10 +10,11 @@
 
 Ch7_Textures::Ch7_Textures()
 {    
-    putTextureOnTriangle();
+//    putTextureOnRectangle();
+    putTwoTexturesOnRectangle();
 }
 
-void Ch7_Textures::putTextureOnTriangle()
+void Ch7_Textures::putTextureOnRectangle()
 {
     auto image = std::make_shared<ImageContainer>("container.jpg");
     if (image->getData())
@@ -59,6 +60,54 @@ void Ch7_Textures::putTextureOnTriangle()
         };
     }
 }
+
+void Ch7_Textures::putTwoTexturesOnRectangle()
+{
+    auto image = std::make_shared<ImageContainer>("container.jpg");
+    auto image2 = std::make_shared<ImageContainer>("awesomeface.png");
+    if (image->getData() && image2->getData())
+    {
+        texApplier.prepareData(image, 0);
+        texApplier2.prepareData(image2, 1);
+
+        // create the array of vertices attributes:
+        float vertices[] = {
+            // positions xyz      // colors rgb    // texture coords st
+            0.5f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+            0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+            -0.5f, 0.5f, 0.0f,  1.0f, 1.0f, 0.0f,   0.0f, 1.0f // top left
+        };
+
+        unsigned int indices[] = {
+            0, 1, 3, // first triangle
+            1, 2, 3 // second triangle
+        };
+
+        TrianglesDrawer::Attributes attr;
+        attr.addAttribute(0, 3, 0);
+        attr.addAttribute(1, 3, 3);
+        attr.addAttribute(2, 2, 6);
+
+        tdEbo.prepareToDraw(vertices, indices, attr);
+
+        sp.createAndLink(textureVS, twoTexturesFS);
+
+        sp.use();
+        // set uniform values once:
+        sp.setInt("ourTexture1", 0);
+        sp.setInt("ourTexture2", 1);
+
+        cb = [this]()
+        {
+            texApplier.execute();
+            texApplier2.execute();
+            sp.use();
+            tdEbo.execute();
+        };
+    }
+}
+
 
 void Ch7_Textures::operator()()
 {

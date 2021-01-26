@@ -13,6 +13,7 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    int getChannels() const;
 
 private:
     std::optional<unsigned char*> data{};

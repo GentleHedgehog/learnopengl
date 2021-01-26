@@ -17,6 +17,7 @@ ImageContainer::ImageContainer(const std::string &fileName)
     {
         data = d;
         std::cout << "load image " << fileName << ", 0x" << std::hex << (uint64_t)d << std::endl;
+        std::cout << "w " << width << " h " << height << " ch " << nrChannels << std::endl;
     }
     else
     {
@@ -43,6 +44,11 @@ const unsigned char *ImageContainer::getData() const
     {
         return nullptr;
     }
+}
+
+int ImageContainer::getChannels() const
+{
+    return nrChannels;
 }
 
 int ImageContainer::getWidth() const
