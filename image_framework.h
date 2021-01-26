@@ -6,7 +6,7 @@
 class ImageContainer
 {
 public:
-    explicit ImageContainer(const std::string& fileName);
+    explicit ImageContainer(const std::string& fileName, bool isFlipOnLoad = false);
     ~ImageContainer();
 
     const unsigned char* getData() const;

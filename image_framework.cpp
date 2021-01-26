@@ -10,8 +10,10 @@ ImageFramework::ImageFramework()
 
 }
 
-ImageContainer::ImageContainer(const std::string &fileName)
+ImageContainer::ImageContainer(const std::string &fileName, bool isFlipOnLoad)
 {
+    stbi_set_flip_vertically_on_load(isFlipOnLoad);
+
     auto d = stbi_load(fileName.c_str(), &width, &height, &nrChannels, 0);
     if (d)
     {

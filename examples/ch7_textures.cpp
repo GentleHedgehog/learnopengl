@@ -64,7 +64,7 @@ void Ch7_Textures::putTextureOnRectangle()
 void Ch7_Textures::putTwoTexturesOnRectangle()
 {
     auto image = std::make_shared<ImageContainer>("container.jpg");
-    auto image2 = std::make_shared<ImageContainer>("awesomeface.png");
+    auto image2 = std::make_shared<ImageContainer>("awesomeface.png", true);
     if (image->getData() && image2->getData())
     {
         texApplier.prepareData(image, 0);
