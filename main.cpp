@@ -1,9 +1,10 @@
 #include <iostream>
 #include "opengl_framework.h"
 
-#include "examples/ch5_hello_triangle.h"
-#include "examples/ch6_shaders_examples.h"
-#include "examples/ch7_textures.h"
+//#include "examples/ch5_hello_triangle.h"
+//#include "examples/ch6_shaders_examples.h"
+//#include "examples/ch7_textures.h"
+#include "examples/ch8_transformation.h"
 
 using namespace std;
 
@@ -43,7 +44,9 @@ int main()
 
 //    Ch5_HelloTriangle example;
 //    Ch6_ShadersExamples example;
-    Ch7_Textures example;
+//    Ch7_Textures example;
+
+    Ch8_Transformation example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);

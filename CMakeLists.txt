@@ -21,6 +21,8 @@ add_executable(lessonProgram
     examples/ch6_shaders.h
     examples/ch7_textures.cpp examples/ch7_textures.h
     examples/ch7_shaders.h
+    examples/ch8_transformation.cpp examples/ch8_transformation.h
+    examples/ch8_shaders.h
     )
 
 target_include_directories(lessonProgram
