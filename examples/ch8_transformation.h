@@ -26,7 +26,6 @@ private:
     using CustomFunc = std::function<void()>;
     CustomFunc cb = nullptr;
 
-    void putTextureOnRectangle();
     void putTwoTexturesOnRectangle();
 
 };

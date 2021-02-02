@@ -30,6 +30,48 @@
  *
  *
  * identity matrix: does not change vector
+ * 1 0 0 0     x     x
+ * 0 1 0 0  *  y  => y
+ * 0 0 1 0     z     z
+ * 0 0 0 1     1     1
+ *
+ * scaling:
+ * uniform - if apply an equal factor for the each axe
+ * s1 0 0 0     x * s1
+ * 0 s2 0 0  => y * s2
+ * 0 0 s3 0     z * s3
+ * 0 0  0 1     1
+ *
+ * translation:
+ * 1 0 0 Tx     x + Tx
+ * 0 1 0 Ty  => y + Ty
+ * 0 0 1 Tz     z + Tz
+ * 0 0 0 1      1(w component - also known as homogeneous coordinate)
+ *
+ * w component:
+ * - allow to do translation,
+ * - used to get 3D coord as: (x/w, y/w, z/w)
+ * - if equal to 0 - this is direction vector (cannot be translated)
+ *
+ * rotation: specified with an angle and a rotation axis
+ * around X:            around Y:                   around Z:
+ * 1 0    0   0          cos    0       sin 0        cos    -sin    0   0
+ * 0 cos -sin 0          0      1       0   0        sin    cos     0   0
+ * 0 sin  cos 0          -sin   0       cos 0        0      0       1   0
+ * 0 0    0   1          0      0       0   1        0      0       0   1
+ *
+ * but a rotation around main axes introduces a problem - Gimbal lock
+ * to minimize a probability of the problem - rotate around arbitrary unit axis ((0.662, 0.2, 0.722) for ex.)
+ * but its rotation matrix has is more complex
+ * sulution - use quaternions
+ *
+ *
+ * combining:
+ * to combine matrices we should multiply them
+ * place matrices from the right to the left (in advised order):
+ * [translation] * [rotation] * [scale]
+ *
+ *
  *
  *
 */
@@ -41,16 +83,15 @@ std::string transformationVS =
 R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
-        layout (location = 1) in vec3 aColor;
-        layout (location = 2) in vec2 aTexCoord;
+        layout (location = 1) in vec2 aTexCoord;
 
-        out vec3 ourColor;
         out vec2 TexCoord;
+
+        uniform mat4 transform;
 
         void main()
         {
-            gl_Position = vec4(aPos, 1.0f);
-            ourColor = aColor;
+            gl_Position = transform * vec4(aPos, 1.0f);
             TexCoord = aTexCoord;
         }
 )";
@@ -61,7 +102,6 @@ R"(
 
         out vec4 FragColor;
 
-        in vec3 ourColor;
         in vec2 TexCoord;
 
         uniform sampler2D ourTexture1;
@@ -70,7 +110,6 @@ R"(
         void main()
         {
             // mix gets two colors and blend them
-            // (factor: 0 - return first color, 1.0 - second color, 0.2 - 80% first 20% second ??)
             FragColor = mix(texture(ourTexture1, TexCoord), texture(ourTexture2, TexCoord), 0.2);
         }
 )";
