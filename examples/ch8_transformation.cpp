@@ -68,19 +68,18 @@ void Ch8_Transformation::putTwoTexturesOnRectangle()
         sp.setInt("ourTexture1", 0);
         sp.setInt("ourTexture2", 1);
 
-        glm::mat4 trans(1.f); // identity
-        glm::vec3 zAxis(0.0f, 0.0f, 1.0f);
-        trans = glm::rotate(trans, glm::radians(90.f), zAxis);
-        glm::vec3 scaleFactors(0.5f, 0.5f, 0.5f);
-        trans = glm::scale(trans, scaleFactors);
-//        printMatrix4(trans);
 
-
-        cb = [this, trans]()
+        cb = [this]()
         {
             texApplier.execute();
             texApplier2.execute();
             sp.use();            
+
+            glm::mat4 trans(1.f); // identity
+            glm::vec3 moveToBottomRight(0.5f, -0.5f, 0.0f);
+            trans = glm::translate(trans, moveToBottomRight);
+            glm::vec3 zAxis(0.0f, 0.0f, 1.0f);
+            trans = glm::rotate(trans, (float)glfwGetTime(), zAxis);
 
             unsigned int transLoc = glGetUniformLocation(sp.getId().value(), "transform");
             glUniformMatrix4fv(transLoc,
