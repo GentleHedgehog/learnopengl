@@ -38,7 +38,7 @@ OpenglFramework::~OpenglFramework()
     glfwTerminate();
 }
 
-bool OpenglFramework::createWindowAsCurrentContext()
+bool OpenglFramework::createWindowAsCurrentContext(int w, int h)
 {
     if (window)
     {
@@ -46,7 +46,7 @@ bool OpenglFramework::createWindowAsCurrentContext()
         return true;
     }
 
-    window = glfwCreateWindow(800, 600, "learn opengl", NULL, NULL);
+    window = glfwCreateWindow(w, h, "learn opengl", NULL, NULL);
     if (! window)
     {
         std::cout << "window creation failed" << std::endl;
@@ -62,7 +62,7 @@ bool OpenglFramework::createWindowAsCurrentContext()
         return false;
     }
 
-    glViewport(0, 0, 800, 600); // inside window, coords: (-1, 1) -> (0, 800) or (0, 600)
+    glViewport(0, 0, w, h); // inside window, coords: (-1, 1) -> (0, 800) or (0, 600)
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     return true;

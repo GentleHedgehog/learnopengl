@@ -8,7 +8,7 @@ class OpenglFramework
 public:
     OpenglFramework();
     ~OpenglFramework();
-    bool createWindowAsCurrentContext();
+    bool createWindowAsCurrentContext(int w = 800, int h = 600);
 
     void printNumberOfAttributes();
 

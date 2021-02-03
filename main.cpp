@@ -1,10 +1,13 @@
 #include <iostream>
 #include "opengl_framework.h"
+#include "common_settings.h"
 
 //#include "examples/ch5_hello_triangle.h"
 //#include "examples/ch6_shaders_examples.h"
 //#include "examples/ch7_textures.h"
-#include "examples/ch8_transformation.h"
+//#include "examples/ch8_transformation.h"
+#include "examples/ch9_coord_system.h"
+
 
 using namespace std;
 
@@ -34,8 +37,11 @@ int main()
 {
     OpenglFramework fw;
 
+    CommonSettings::width = 400;
+    CommonSettings::height = 300;
+
     std::cout << "start init" << std::endl;
-    if (!fw.createWindowAsCurrentContext())
+    if (!fw.createWindowAsCurrentContext(CommonSettings::width, CommonSettings::height))
     {
         return -1;
     }
@@ -45,8 +51,8 @@ int main()
 //    Ch5_HelloTriangle example;
 //    Ch6_ShadersExamples example;
 //    Ch7_Textures example;
-
-    Ch8_Transformation example;
+//    Ch8_Transformation example;
+    Ch9_CoordSystem example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);

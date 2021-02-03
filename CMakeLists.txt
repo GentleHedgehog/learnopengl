@@ -15,6 +15,7 @@ add_executable(lessonProgram
     shader_program.cpp shader_program.h
     triangles_drawer.cpp triangles_drawer.h
     texture_applier.cpp texture_applier.h
+    common_settings.h
     examples/ch5_hello_triangle.cpp examples/ch5_hello_triangle.h
     examples/ch5_shaders.h
     examples/ch6_shaders_examples.cpp examples/ch6_shaders_examples.h
@@ -23,6 +24,8 @@ add_executable(lessonProgram
     examples/ch7_shaders.h
     examples/ch8_transformation.cpp examples/ch8_transformation.h
     examples/ch8_shaders.h
+    examples/ch9_coord_system.cpp examples/ch9_coord_system.h
+    examples/ch9_shaders.h
     )
 
 target_include_directories(lessonProgram
