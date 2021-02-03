@@ -172,7 +172,24 @@ void Ch9_CoordSystem::createCubeIn3DWorld()
         attr.addAttribute(0, 3, 0);
         attr.addAttribute(1, 2, 3);
 
+        // we dont use EBO, because combination (vertex + texture coord) should be unique
+        // and we cannot save much memory (one combination cannot be used by two facets due to diffrent tex coords)
         td.prepareToDraw(vertices, attr);
+
+
+        glm::vec3 cubePositions[] = {
+            glm::vec3( 0.0f,  0.0f,  0.0f),
+            glm::vec3( 2.0f,  5.0f, -15.0f),
+            glm::vec3(-1.5f, -2.2f, -2.5f),
+            glm::vec3(-3.8f, -2.0f, -12.3f),
+            glm::vec3( 2.4f, -0.4f, -3.5f),
+            glm::vec3(-1.7f,  3.0f, -7.5f),
+            glm::vec3( 1.3f, -2.0f, -2.5f),
+            glm::vec3( 1.5f,  2.0f, -2.5f),
+            glm::vec3( 1.5f,  0.2f, -1.5f),
+            glm::vec3(-1.3f,  1.0f, -1.5f)
+        };
+
 
         sp.createAndLink(coordSystemVS, coordSystemFS);
 
@@ -183,19 +200,13 @@ void Ch9_CoordSystem::createCubeIn3DWorld()
 
         glEnable(GL_DEPTH_TEST);
 
-        cb = [this]()
+        cb = [this, cubePositions]()
         {
             glClear(GL_DEPTH_BUFFER_BIT);
 
             texApplier.execute();
             texApplier2.execute();
             sp.use();
-
-            glm::mat4 model(1.0f);
-            auto rotationAxis = glm::vec3(0.5f, 1.0f, 0.0f);
-            // our plane is slightly on the floor:
-            auto currentAngle = static_cast<float>(glfwGetTime()) * glm::radians(50.f);
-            model = glm::rotate(model, currentAngle, rotationAxis);
 
             glm::mat4 view(1.0f);
             // translate along -z (imitate the camera backward moving in RHS):
@@ -205,26 +216,22 @@ void Ch9_CoordSystem::createCubeIn3DWorld()
             auto fov = glm::radians(45.f);
             proj = glm::perspective(fov, CommonSettings::getAspectRatio(), 0.1f, 100.f);
 
+            sp.setMat4("view", view);
+            sp.setMat4("proj", proj);
 
-            unsigned int modelLoc = glGetUniformLocation(sp.getId().value(), "model");
-            glUniformMatrix4fv(modelLoc,
-                               1,  // how many matrices
-                               GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
-                               glm::value_ptr(model)); // proper matrix representation
+            for (unsigned int i = 0; i < 10; i++)
+            {
+                glm::mat4 model(1.0f);
+                model = glm::translate(model, cubePositions[i]);
+                auto rotationAxis = glm::vec3(1.0f, 0.3f, 0.5f);
+//                float currentAngle = 20.f * i;
+                auto currentAngle = static_cast<float>(glfwGetTime()) * glm::radians(50.f);
+                model = glm::rotate(model, currentAngle, rotationAxis);
+                sp.setMat4("model", model);
 
-            unsigned int viewLoc = glGetUniformLocation(sp.getId().value(), "view");
-            glUniformMatrix4fv(viewLoc,
-                               1,  // how many matrices
-                               GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
-                               glm::value_ptr(view)); // proper matrix representation
+                td.execute();
+            }
 
-            unsigned int projLoc = glGetUniformLocation(sp.getId().value(), "proj");
-            glUniformMatrix4fv(projLoc,
-                               1,  // how many matrices
-                               GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
-                               glm::value_ptr(proj)); // proper matrix representation
-
-            td.execute();
         };
     }
 }

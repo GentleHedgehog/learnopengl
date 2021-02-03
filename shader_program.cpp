@@ -1,7 +1,11 @@
 #include "shader_program.h"
-#include <glad/glad.h>
+
 #include <iostream>
 #include <cassert>
+
+#include <glad/glad.h>
+#include "glm/glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace {
 
@@ -126,6 +130,16 @@ void ShaderProgram::setFloat(const std::string &name, float value) const
 {
     assert(isLinked);
     glUniform1f(glGetUniformLocation(shaderProgram.value(), name.c_str()), value);
+}
+
+void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &value) const
+{
+    assert(isLinked);
+    auto id = glGetUniformLocation(shaderProgram.value(), name.c_str());
+    glUniformMatrix4fv(id,
+                       1,  // how many matrices
+                       GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
+                       glm::value_ptr(value));// proper matrix representation
 }
 
 void ShaderProgram::use()
