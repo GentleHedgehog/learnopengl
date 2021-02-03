@@ -60,6 +60,18 @@
  *
  *  left-handed system (LHS) is used in DirectX and -> _after projection matrix_ (in NDC) !!!
  *      thumb(+x), pointing finger(+y), middle finger(+z, away from you)
+ *
+ *
+ * OpenGL gives no guarantee on the order of triangles rendered (within the same draw call)
+ *  we have to use the z-buffer (depth-testing) to properly render the overlapping pixels!
+ *  glwf creates depth buffer for you and save depth value in the z-coord components of each fragment
+ *  we have to enable the depth testing:
+ *      glEnable(GL_DEPTH_TEST);
+ *      ...
+ *      // clear the bit before rendering in the game cycle. That's all we should do for the depth testing!
+ *      glClear(GL_DEPTH_BUFFER_BIT);
+ *
+ *
 */
 
 

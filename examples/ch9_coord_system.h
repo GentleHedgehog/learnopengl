@@ -20,13 +20,14 @@ public:
 private:
     ShaderProgram sp;
     TrianglesDrawerEBO tdEbo;
+    TrianglesDrawer td;
     TextureApplier texApplier;
     TextureApplier texApplier2;
 
     using CustomFunc = std::function<void()>;
     CustomFunc cb = nullptr;
 
-    void putTwoTexturesOnRectangle();
-
+    void createPlaneIn3DWorld();
+    void createCubeIn3DWorld();
 };
 
