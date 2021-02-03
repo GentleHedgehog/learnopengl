@@ -75,19 +75,41 @@ void Ch8_Transformation::putTwoTexturesOnRectangle()
             texApplier2.execute();
             sp.use();            
 
-            glm::mat4 trans(1.f); // identity
-            glm::vec3 moveToBottomRight(0.5f, -0.5f, 0.0f);
-            trans = glm::translate(trans, moveToBottomRight);
-            glm::vec3 zAxis(0.0f, 0.0f, 1.0f);
-            trans = glm::rotate(trans, (float)glfwGetTime(), zAxis);
+            // draw first container
+            {
+                glm::mat4 trans(1.f); // identity
+                glm::vec3 moveToBottomRight(0.5f, -0.5f, 0.0f);
+                trans = glm::translate(trans, moveToBottomRight);
+                glm::vec3 zAxis(0.0f, 0.0f, 1.0f);
+                trans = glm::rotate(trans, (float)glfwGetTime(), zAxis);
 
-            unsigned int transLoc = glGetUniformLocation(sp.getId().value(), "transform");
-            glUniformMatrix4fv(transLoc,
-                               1,  // how many matrices
-                               GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
-                               glm::value_ptr(trans)); // proper matrix representation
+                unsigned int transLoc = glGetUniformLocation(sp.getId().value(), "transform");
+                glUniformMatrix4fv(transLoc,
+                                   1,  // how many matrices
+                                   GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
+                                   glm::value_ptr(trans)); // proper matrix representation
 
-            tdEbo.execute();
+                tdEbo.execute();
+            }
+
+            // draw second container
+            {
+                glm::mat4 trans(1.f); // identity
+                glm::vec3 moveToTopLeft(-0.5f, 0.5f, 0.0f);
+                trans = glm::translate(trans, moveToTopLeft);
+
+                float scaleFactor = sin((float)glfwGetTime());
+                glm::vec3 scaler(scaleFactor, scaleFactor, 1.0f);
+                trans = glm::scale(trans, scaler);
+
+                unsigned int transLoc = glGetUniformLocation(sp.getId().value(), "transform");
+                glUniformMatrix4fv(transLoc,
+                                   1,  // how many matrices
+                                   GL_FALSE, // transpose flag (to get column-major ordering), glm has already such ordering
+                                   glm::value_ptr(trans)); // proper matrix representation
+
+                tdEbo.execute();
+            }
         };
     }
 }
