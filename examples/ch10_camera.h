@@ -28,6 +28,6 @@ private:
 
     nOpenglFramework::WorkerCallbackType cb = nullptr;
 
-    void createCircleMovingAroundTheScene();
+    void createFreeMovingAroundTheScene();
 };
 
