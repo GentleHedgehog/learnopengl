@@ -26,6 +26,50 @@ void printMatrix4(const glm::mat4& mat, const std::string& name = "")
     std::cout << std::endl;
 }
 
+struct CurrentEulerAngles
+{
+    static inline float pitch{};
+    static inline float yaw{};
+//    static inline bool isFirstCall = true;
+
+    static glm::vec3 getNewFront()
+    {
+        glm::vec3 front;
+        front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front.y = sin(glm::radians(pitch));
+        front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        return front;
+    }
+
+    static void setNewPos(float x, float y)
+    {
+        static float lastX = x, lastY = y;
+
+        float sensitivity = 0.05f; // to prevent sharp movements
+        float xoffset = (x - lastX) * sensitivity;
+        float yoffset = (lastY - y) * sensitivity;
+        lastX = x;
+        lastY = y;
+
+        addOffset(xoffset, yoffset);
+    }
+
+    static void addOffset(float xoffset, float yoffset)
+    {
+        yaw  += xoffset;
+        pitch += yoffset;
+
+        if (pitch > 89.f)
+        {
+            pitch = 89.f;
+        }
+        else if (pitch < -89.f)
+        {
+            pitch = -89.f;
+        }
+    }
+};
+
 struct CameraMovingCalculator
 {
     float deltaTime = 0.f; // time between cur frame and last frame
@@ -35,8 +79,12 @@ struct CameraMovingCalculator
     glm::vec3 cameraFront{0.f, 0.f, -1.f};
     glm::vec3 cameraUp{0.f, 1.f, 0.f};
 
+    bool isFirstCall = true;
+
     glm::mat4 calculateLookAtMatrix()
     {
+        cameraFront = glm::normalize(CurrentEulerAngles::getNewFront());
+
         return glm::lookAt(cameraPos,
         // ensures that camera keeps looking at the target direction (when we are moving):
                            cameraPos + cameraFront, // ~ target
@@ -45,6 +93,20 @@ struct CameraMovingCalculator
 
     void processInput(GLFWwindow* w)
     {
+        if (isFirstCall)
+        {
+            isFirstCall = false;
+            // it should hide the cursor and capture it
+            glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+            auto cb = [](GLFWwindow* w, double xpos, double ypos)
+            {(void)w;
+                CurrentEulerAngles::setNewPos(xpos, ypos);
+            };
+            glfwSetCursorPosCallback(w, cb);
+        }
+
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;

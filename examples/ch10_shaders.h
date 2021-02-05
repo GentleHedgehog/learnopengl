@@ -54,6 +54,23 @@
    float radius = 10.f;
    float camX = sin(glfwGetTime()) * radius;
    float camZ = cos(glfwGetTime()) * radius;
+
+   *
+   * Look around:
+   *
+   * Euler angles:
+   *
+   * pitch - up/down
+   * yaw - left/right
+   * roll - rolling around the long axis
+   *
+   * direction vector:
+   * x = cos(pitch) * cos(yaw) = hypotenuse * cos(yaw) = projection_on_x (from camera point)
+   * y = sin(pitch) = projection_on_y (from camera point)
+   * z = cos(pitch) * sin(yaw) = hypotenuse * sin(yaw) = projection_on_z (from camera point)
+   *
+   *
+   *
 */
 
 
