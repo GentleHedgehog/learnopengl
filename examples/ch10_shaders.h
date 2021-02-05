@@ -22,6 +22,9 @@
  *
  * P - point of the camera in the world (negative due to: we want translate the world in the opposite direction)
  *
+ *
+ * deltaTime - useful measure to calculate an equal camera speed (for slow and fast hardware)
+ *
 */
 
 

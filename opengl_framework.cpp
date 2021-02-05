@@ -75,7 +75,7 @@ void OpenglFramework::printNumberOfAttributes()
     std::cout << "max num of vertex attribs supported: " << nrAtt << std::endl;
 }
 
-void OpenglFramework::run(CustomFunc f)
+void OpenglFramework::run(nOpenglFramework::WorkerCallbackType f)
 {
     if (! window)
     {
@@ -83,6 +83,9 @@ void OpenglFramework::run(CustomFunc f)
         //        return;
         throw std::logic_error("cannot run without window");
     }
+
+    nOpenglFramework::OpenglContextData context;
+    context.window = window;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -92,11 +95,19 @@ void OpenglFramework::run(CustomFunc f)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // choose color (state settings func)
         glClear(GL_COLOR_BUFFER_BIT); // clear color buffer (state using func)
 
-        f();
+        f(context);
 
         glfwPollEvents();
         glfwSwapBuffers(window); // front and back buffers
     }
+}
+
+void OpenglFramework::run(nOpenglFramework::WorkerCallbackSimpleType f)
+{
+    auto stub = [=](const nOpenglFramework::OpenglContextData&){
+            f();
+    };
+    run(stub);
 }
 
 

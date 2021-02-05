@@ -8,6 +8,8 @@
 #include "triangles_drawer.h"
 #include "texture_applier.h"
 
+#include "common_definitions.h"
+
 // Part I, Chapters 10
 
 class Ch10_Camera
@@ -15,7 +17,7 @@ class Ch10_Camera
 public:
     Ch10_Camera();
 
-    void operator() ();
+    void operator()(const nOpenglFramework::OpenglContextData& data);
 
 private:
     ShaderProgram sp;
@@ -24,8 +26,7 @@ private:
     TextureApplier texApplier;
     TextureApplier texApplier2;
 
-    using CustomFunc = std::function<void()>;
-    CustomFunc cb = nullptr;
+    nOpenglFramework::WorkerCallbackType cb = nullptr;
 
     void createCircleMovingAroundTheScene();
 };

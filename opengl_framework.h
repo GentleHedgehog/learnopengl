@@ -1,7 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <functional>
+
+#include "common_definitions.h"
 
 class OpenglFramework
 {
@@ -12,8 +13,8 @@ public:
 
     void printNumberOfAttributes();
 
-    using CustomFunc = std::function<void()>;
-    void run(CustomFunc f);
+    void run(nOpenglFramework::WorkerCallbackType f);
+    void run(nOpenglFramework::WorkerCallbackSimpleType f);
 private:
     GLFWwindow* window = nullptr;
 };

@@ -26,6 +26,42 @@ void printMatrix4(const glm::mat4& mat, const std::string& name = "")
     std::cout << std::endl;
 }
 
+struct CameraMovingCalculator
+{
+    glm::vec3 cameraPos{0.f, 0.f, 3.f};
+    glm::vec3 cameraFront{0.f, 0.f, -1.f};
+    glm::vec3 cameraUp{0.f, 1.f, 0.f};
+
+    glm::mat4 calculateLookAtMatrix()
+    {
+        return glm::lookAt(cameraPos,
+        // ensures that camera keeps looking at the target direction (when we are moving):
+                           cameraPos + cameraFront, // ~ target
+                           cameraUp);
+    }
+
+    void processInput(GLFWwindow* w)
+    {
+        float cameraSpeed = 0.05f;
+        if (glfwGetKey(w, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            cameraPos += cameraSpeed * cameraFront;
+        }
+        else if (glfwGetKey(w, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            cameraPos -= cameraSpeed * cameraFront;
+        }
+        else if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+        }
+        else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+        }
+    }
+};
+
 }
 
 Ch10_Camera::Ch10_Camera()
@@ -151,27 +187,32 @@ void Ch10_Camera::createCircleMovingAroundTheScene()
 
         glEnable(GL_DEPTH_TEST);
 
-        cb = [this, cubePositions]()
+
+        cb = [this, cubePositions](const nOpenglFramework::OpenglContextData& data)
         {
+            // for free moving with WSAD keys on keyboard:
+            static CameraMovingCalculator movingCalc;
+
+            movingCalc.processInput(data.window);
+
             glClear(GL_DEPTH_BUFFER_BIT);
+
+//            static float deltaTime = 0.f; // time between cur frame and last frame
+//            static float lastFrame = 0.f; // time of last frame
+//            float currentFrame = glfwGetTime();
+//            deltaTime = currentFrame - lastFrame;
+//            lastFrame = currentFrame;
+//            float cameraSpeed = 2.5f * deltaTime;
 
             texApplier.execute();
             texApplier2.execute();
             sp.use();
 
-            // to rotate around the scen around the circle
-            float radius = 20.f;
-            float camX = sin(glfwGetTime()) * radius;
-            float camZ = cos(glfwGetTime()) * radius;
-            // lookAt(camera_pos, target, up)
-            auto view = glm::lookAt(glm::vec3(camX, 0, camZ), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-
-
             glm::mat4 proj(1.0f);
             auto fov = glm::radians(45.f);
             proj = glm::perspective(fov, CommonSettings::getAspectRatio(), 0.1f, 100.f);
 
-            sp.setMat4("view", view);
+            sp.setMat4("view", movingCalc.calculateLookAtMatrix());
             sp.setMat4("proj", proj);
 
             for (unsigned int i = 0; i < 10; i++)
@@ -186,16 +227,15 @@ void Ch10_Camera::createCircleMovingAroundTheScene()
 
                 td.execute();
             }
-
         };
     }
 }
 
 
-void Ch10_Camera::operator()()
+void Ch10_Camera::operator ()(const nOpenglFramework::OpenglContextData& data)
 {
     if (cb)
     {
-        cb();
+        cb(data);
     }
 }
