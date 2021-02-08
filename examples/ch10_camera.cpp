@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
+#include <chrono>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -70,6 +71,28 @@ struct CurrentEulerAngles
     }
 };
 
+struct CurrentZoom
+{
+    static inline float fov = 45;
+    static void setVerticalScrolling(double y)
+    {
+        if (fov >= 1.f && fov <= 45.f)
+        {
+            fov -= y;
+        }
+        else if (fov <= 1.f)
+        {
+            fov = 1.f;
+        }
+        else if (fov >= 45.f)
+        {
+            fov = 45.f;
+        }
+
+        std::cout << "new fow: " << fov << std::endl;
+    }
+};
+
 struct CameraMovingCalculator
 {
     float deltaTime = 0.f; // time between cur frame and last frame
@@ -80,6 +103,7 @@ struct CameraMovingCalculator
     glm::vec3 cameraUp{0.f, 1.f, 0.f};
 
     bool isFirstCall = true;
+    bool isCursorEnabled = true;
 
     glm::mat4 calculateLookAtMatrix()
     {
@@ -98,12 +122,20 @@ struct CameraMovingCalculator
             isFirstCall = false;
             // it should hide the cursor and capture it
             glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            isCursorEnabled = false;
 
-            auto cb = [](GLFWwindow* w, double xpos, double ypos)
+            auto cbMove = [](GLFWwindow* w, double xpos, double ypos)
             {(void)w;
                 CurrentEulerAngles::setNewPos(xpos, ypos);
             };
-            glfwSetCursorPosCallback(w, cb);
+            glfwSetCursorPosCallback(w, cbMove);
+
+            auto cbScroll = [](GLFWwindow* w, double x, double y)
+            {(void)w; (void)x;
+                // y - amount of scrolling vertically:
+                CurrentZoom::setVerticalScrolling(y);
+            };
+            glfwSetScrollCallback(w, cbScroll);
         }
 
 
@@ -127,6 +159,24 @@ struct CameraMovingCalculator
         else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS)
         {
             cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+        }
+        else if (glfwGetKey(w, GLFW_KEY_F2) == GLFW_PRESS)
+        {
+            using clock = std::chrono::steady_clock;
+            static clock::time_point startDelay = clock::now();
+            if ((clock::now() - startDelay) > std::chrono::seconds(1))
+            {
+                if (isCursorEnabled)
+                {
+                    glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                }
+                else
+                {
+                    glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                }
+                isCursorEnabled = !isCursorEnabled;
+                startDelay = clock::now();
+            }
         }
     }
 };
@@ -239,8 +289,7 @@ void Ch10_Camera::createFreeMovingAroundTheScene()
             sp.use();
 
             glm::mat4 proj(1.0f);
-            auto fov = glm::radians(45.f);
-            proj = glm::perspective(fov, CommonSettings::getAspectRatio(), 0.1f, 100.f);
+            proj = glm::perspective(glm::radians(CurrentZoom::fov), CommonSettings::getAspectRatio(), 0.1f, 100.f);
 
             sp.setMat4("view", movingCalc.calculateLookAtMatrix());
             sp.setMat4("proj", proj);
