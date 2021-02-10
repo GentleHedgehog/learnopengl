@@ -21,6 +21,7 @@ public:
 
 private:
     ShaderProgram sp;
+    ShaderProgram spLighting;
     TrianglesDrawerEBO tdEbo;
     TrianglesDrawer td;
     TextureApplier texApplier;
@@ -28,6 +29,6 @@ private:
 
     nOpenglFramework::WorkerCallbackType cb = nullptr;
 
-    void createFreeMovingAroundTheScene();
+    void createSceneWithLightSource();
 };
 

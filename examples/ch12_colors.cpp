@@ -32,10 +32,10 @@ void printMatrix4(const glm::mat4& mat, const std::string& name = "")
 
 Ch12_Colors::Ch12_Colors()
 {
-    createFreeMovingAroundTheScene();
+    createSceneWithLightSource();
 }
 
-void Ch12_Colors::createFreeMovingAroundTheScene()
+void Ch12_Colors::createSceneWithLightSource()
 {
     auto image = std::make_shared<ImageContainer>("container.jpg");
     auto image2 = std::make_shared<ImageContainer>("awesomeface.png", true);
@@ -46,88 +46,73 @@ void Ch12_Colors::createFreeMovingAroundTheScene()
 
         // create the array of vertices attributes:
         float vertices[] = {
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-             0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+            -0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+            -0.5f,  0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
 
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+            -0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f, -0.5f,  0.5f,
 
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f, -0.5f,
+            -0.5f, -0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
 
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
 
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+            -0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f, -0.5f,
+             0.5f, -0.5f,  0.5f,
+             0.5f, -0.5f,  0.5f,
+            -0.5f, -0.5f,  0.5f,
+            -0.5f, -0.5f, -0.5f,
 
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-             0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-             0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-            -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-            -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+            -0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f, -0.5f,
+             0.5f,  0.5f,  0.5f,
+             0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f,  0.5f,
+            -0.5f,  0.5f, -0.5f,
         };
 
         TrianglesDrawer::Attributes attr;
         attr.addAttribute(0, 3, 0);
-        attr.addAttribute(1, 2, 3);
-
         // we dont use EBO, because combination (vertex + texture coord) should be unique
         // and we cannot save much memory (one combination cannot be used by two facets due to diffrent tex coords)
         td.prepareToDraw(vertices, attr);
 
 
-        glm::vec3 cubePositions[] = {
-            glm::vec3( 0.0f,  0.0f,  0.0f),
-            glm::vec3( 2.0f,  5.0f, -15.0f),
-            glm::vec3(-1.5f, -2.2f, -2.5f),
-            glm::vec3(-3.8f, -2.0f, -12.3f),
-            glm::vec3( 2.4f, -0.4f, -3.5f),
-            glm::vec3(-1.7f,  3.0f, -7.5f),
-            glm::vec3( 1.3f, -2.0f, -2.5f),
-            glm::vec3( 1.5f,  2.0f, -2.5f),
-            glm::vec3( 1.5f,  0.2f, -1.5f),
-            glm::vec3(-1.3f,  1.0f, -1.5f)
-        };
-
+        spLighting.createAndLink(colorsVS, colorsLightFS);
 
         sp.createAndLink(colorsVS, colorsFS);
-
         sp.use();
-        // set uniform values once:
-        sp.setInt("ourTexture1", 0);
-        sp.setInt("ourTexture2", 1);
+        sp.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
+        sp.setVec3("lightColor", glm::vec3(1.f, 1.f, 1.f));
 
         glEnable(GL_DEPTH_TEST);
 
 
-        cb = [this, cubePositions](const nOpenglFramework::OpenglContextData& data)
+        cb = [this](const nOpenglFramework::OpenglContextData& data)
         {
             static CameraSystem cs;
             cs.process(data.window);
 
-            glClear(GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.f, 0.f, 0.f, 1.0f); // black
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
             texApplier.execute();
             texApplier2.execute();
@@ -139,18 +124,21 @@ void Ch12_Colors::createFreeMovingAroundTheScene()
             sp.setMat4("view", cs.getCurrentViewMatrix());
             sp.setMat4("proj", proj);
 
-            for (unsigned int i = 0; i < 10; i++)
-            {
-                glm::mat4 model(1.0f);
-                model = glm::translate(model, cubePositions[i]);
-                auto rotationAxis = glm::vec3(1.0f, 0.3f, 0.5f);
-//                float currentAngle = 20.f * i;
-                auto currentAngle = static_cast<float>(glfwGetTime()) * glm::radians(50.f);
-                model = glm::rotate(model, currentAngle, rotationAxis);
-                sp.setMat4("model", model);
+            glm::mat4 model(1.0f);
+            sp.setMat4("model", model);
 
-                td.execute();
-            }
+            td.execute();
+
+            spLighting.use();
+            glm::vec3 scaleForCube(0.2f, 0.2f, 0.2f);
+            model = glm::scale(model, scaleForCube);
+            glm::vec3 lightPos(3.2f, 1.0f, 5.0f);
+            model = glm::translate(model, lightPos);
+            spLighting.setMat4("model", model);
+            spLighting.setMat4("view", cs.getCurrentViewMatrix());
+            spLighting.setMat4("proj", proj);
+
+            td.execute();
         };
     }
 }

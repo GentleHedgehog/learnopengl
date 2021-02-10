@@ -142,6 +142,15 @@ void ShaderProgram::setMat4(const std::string &name, const glm::mat4 &value) con
                        glm::value_ptr(value));// proper matrix representation
 }
 
+void ShaderProgram::setVec3(const std::string &name, const glm::vec3 &value) const
+{
+    assert(isLinked);
+    auto id = glGetUniformLocation(shaderProgram.value(), name.c_str());
+    glUniform3fv(id,
+                 1,  // how many vectors
+                 glm::value_ptr(value));// proper vector representation
+}
+
 void ShaderProgram::use()
 {
     assert(isLinked);
