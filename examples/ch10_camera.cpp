@@ -112,7 +112,7 @@ void Ch10_Camera::createFreeMovingAroundTheScene()
         };
 
 
-        sp.createAndLink(cameraVS, cameraFS);
+        sp.createAndLink(cameraVS, colorsFS);
 
         sp.use();
         // set uniform values once:

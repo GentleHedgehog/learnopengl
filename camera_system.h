@@ -14,5 +14,6 @@ public:
     void process(GLFWwindow *w);
     float getCurrentFOV();
     glm::mat4 getCurrentViewMatrix();
+    glm::mat4 getCurrentProjectionMatrix();
 };
 

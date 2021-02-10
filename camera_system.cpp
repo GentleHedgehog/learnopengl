@@ -184,3 +184,8 @@ glm::mat4 CameraSystem::getCurrentViewMatrix()
 {
     return movingCalc.calculateLookAtMatrix();
 }
+
+glm::mat4 CameraSystem::getCurrentProjectionMatrix()
+{
+    return movingCalc.calculateLookAtMatrix();
+}

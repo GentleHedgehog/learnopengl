@@ -6,7 +6,7 @@
  * camera has its own coor system
  *
  *
- * 'look at' matrix:
+ * 'look at' matrix (it is actually the inverse of the camera's model matrix):
  *
  * rotate      *  translate
  *
@@ -95,7 +95,7 @@ R"(
         }
 )";
 
-std::string cameraFS =
+std::string colorsFS =
 R"(
         #version 330 core
 
