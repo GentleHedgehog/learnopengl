@@ -6,8 +6,9 @@
 //#include "examples/ch6_shaders_examples.h"
 //#include "examples/ch7_textures.h"
 //#include "examples/ch8_transformation.h"
-#include "examples/ch9_coord_system.h"
-#include "examples/ch10_camera.h"
+//#include "examples/ch9_coord_system.h"
+//#include "examples/ch10_camera.h"
+#include "examples/ch12_colors.h"
 
 
 using namespace std;
@@ -54,7 +55,8 @@ int main()
 //    Ch7_Textures example;
 //    Ch8_Transformation example;
 //    Ch9_CoordSystem example;
-    Ch10_Camera example;
+//    Ch10_Camera example;
+    Ch12_Colors example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);

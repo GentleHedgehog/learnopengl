@@ -30,6 +30,8 @@ add_executable(lessonProgram
     examples/ch9_shaders.h
     examples/ch10_camera.cpp examples/ch10_camera.h
     examples/ch10_shaders.h
+    examples/ch12_colors.cpp examples/ch12_colors.h
+    examples/ch12_shaders.h
     )
 
 target_include_directories(lessonProgram
