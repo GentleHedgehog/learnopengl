@@ -8,7 +8,8 @@
 //#include "examples/ch8_transformation.h"
 //#include "examples/ch9_coord_system.h"
 //#include "examples/ch10_camera.h"
-#include "examples/ch12_colors.h"
+//#include "examples/ch12_colors.h"
+#include "examples/ch13_basic_lighting.h"
 
 
 using namespace std;
@@ -56,7 +57,8 @@ int main()
 //    Ch8_Transformation example;
 //    Ch9_CoordSystem example;
 //    Ch10_Camera example;
-    Ch12_Colors example;
+//    Ch12_Colors example;
+    Ch13_BasicLighting example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);

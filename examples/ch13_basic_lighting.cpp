@@ -1,5 +1,5 @@
-#include "ch12_colors.h"
-#include "ch12_shaders.h"
+#include "ch13_basic_lighting.h"
+#include "ch13_shaders.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -30,12 +30,12 @@ void printMatrix4(const glm::mat4& mat, const std::string& name = "")
 
 }
 
-Ch12_Colors::Ch12_Colors()
+Ch13_BasicLighting::Ch13_BasicLighting()
 {
     createSceneWithLightSource();
 }
 
-void Ch12_Colors::createSceneWithLightSource()
+void Ch13_BasicLighting::createSceneWithLightSource()
 {
     auto image = std::make_shared<ImageContainer>("container.jpg");
     auto image2 = std::make_shared<ImageContainer>("awesomeface.png", true);
@@ -96,9 +96,9 @@ void Ch12_Colors::createSceneWithLightSource()
         td.prepareToDraw(vertices, attr);
 
 
-        spLighting.createAndLink(colorsVS, lampFS);
+        spLighting.createAndLink(basicLightingVS, lampFS);
 
-        sp.createAndLink(colorsVS, colorsFS);
+        sp.createAndLink(basicLightingVS, basicLightingFS);
         sp.use();
         sp.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
         sp.setVec3("lightColor", glm::vec3(1.f, 1.f, 1.f));
@@ -144,7 +144,7 @@ void Ch12_Colors::createSceneWithLightSource()
 }
 
 
-void Ch12_Colors::operator ()(const nOpenglFramework::OpenglContextData& data)
+void Ch13_BasicLighting::operator ()(const nOpenglFramework::OpenglContextData& data)
 {
     if (cb)
     {

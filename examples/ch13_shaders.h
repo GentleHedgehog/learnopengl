@@ -1,30 +1,15 @@
 #pragma once
 
 
-/* colors
+/* basic lighting
  *
- * r g b
- *
- * real life objects have a color that they reject/reflect (not absorbed)
- *
- * 3d scene:
- *
- * light source -> white color
- * white color * object color = reflected color of the object
- *
- * (1, 1, 1) * (1, 0.5, 1) = (1, 0.5, 1)
- *
- * if we would use grean color:
- * (0, 1, 0) * (1, 0.5, 1) = (0, 0.5, 0) // reflect dark-green color
- *
- * for the light source we should create a separate shader
  *  
 */
 
 
 #include <string>
 
-const std::string colorsVS =
+const std::string basicLightingVS =
 R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
@@ -43,7 +28,7 @@ R"(
         }
 )";
 
-const std::string colorsFS =
+const std::string basicLightingFS =
 R"(
         #version 330 core
 
