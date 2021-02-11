@@ -31,6 +31,10 @@
  *      view vector can be calculated as diff = view point - fragment point (in world coords)
  *          it can be done in a view space too, where view point is always at (0, 0, 0), but it is not so intuitive
  *
+ *
+ *  if Phong lighting model is implemented in vertex shader - called Gouraund shading
+ *      it is more efficient (due to vertex count < fragment count), but is not very realistic (due to interpolation)
+ *
 */
 
 
