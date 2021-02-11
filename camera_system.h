@@ -9,9 +9,11 @@
 class CameraSystem
 {
 public:
-    CameraSystem();
+    CameraSystem(glm::vec3 cameraPos = {0.f, 0.f, 3.f});
 
     void process(GLFWwindow *w);
+    glm::vec3 getCurrentPosition();
+
     float getCurrentFOV();
     glm::mat4 getCurrentViewMatrix();
 };

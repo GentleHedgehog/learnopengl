@@ -107,13 +107,14 @@ void Ch13_BasicLighting::createSceneWithLightSource()
 
         glEnable(GL_DEPTH_TEST);
 
+        static const glm::vec3 cameraPos{0.f, 0.f, 3.f};
 
         cb = [this](const nOpenglFramework::OpenglContextData& data)
         {
             static const glm::vec3 scaleForCube(0.2f, 0.2f, 0.2f);
             static const glm::vec3 lightPos(3.2f, 1.0f, 5.0f);
 
-            static CameraSystem cs;
+            static CameraSystem cs(cameraPos);
             cs.process(data.window);
 
             glClearColor(0.0f, 0.25f, 0.f, 1.0f); // dark green
@@ -132,6 +133,7 @@ void Ch13_BasicLighting::createSceneWithLightSource()
             glm::mat4 model(1.0f);
             sp.setMat4("model", model);
             sp.setVec3("lightPos", lightPos);
+            sp.setVec3("viewPos", cs.getCurrentPosition());
 
             td.execute();
 

@@ -10,6 +10,7 @@
  *  - specular - simulate the bright spot on shiny objects (inclined to the color of the light)
  *
  *  ambient - is a simple analog of global illumination (complex model of light reflection from objects)
+ *      can be calculated as an object color multiplied by a small part of the light source
  *
  *  diffuse - based on the angle of incidence of the light beam (check the angle between a light beam and a normal vector)
  *      the more angle the fewer value of the color
@@ -24,6 +25,11 @@
  *
  *      inversing matrix is a costly operation - avoid to do this operation inside a shader!
  *
+ *  specular - light reflected from a fragment in the opposite direction (with an equal angle from a normal)
+ *      we see this fragment from view direction
+ *      the closer the angle between reflection and view vector, the greater the impact of the specular light
+ *      view vector can be calculated as diff = view point - fragment point (in world coords)
+ *          it can be done in a view space too, where view point is always at (0, 0, 0), but it is not so intuitive
  *
 */
 
@@ -64,11 +70,16 @@ R"(
         in vec3 FragPos;
 
         uniform vec3 lightPos;
+        uniform vec3 viewPos;
 
         void main()
         {
+            // AMBIENT:
+
             float ambientStrength = 0.1f;
             vec3 ambient = ambientStrength * lightColor;
+
+            // DIFFUSE:
 
             vec3 norm = normalize(Normal); // why normalize a normal vector??
             // light's direction vector = light pos vector - fragment pos vector [LightPoint <--- FragmentPoint]
@@ -77,7 +88,20 @@ R"(
             float diff = max(dot(norm, lightDir), 0.0); // prevent negative color value by max()
             vec3 diffuse = diff * lightColor;
 
-            vec3 result = (diffuse + ambient) * objectColor;
+            // SPECULAR:
+
+            float specularStrength = 0.5f;
+            vec3 viewDir = normalize(viewPos - FragPos);
+            // first arg is vec from light source to fragment, second - normal vector for this fragment
+            // -lightDir = [LightPoint ---> FragmentPoint]
+            vec3 reflectDir = reflect(-lightDir, norm);
+
+            int shininess = 32;
+            float spec = pow(max(dot(viewDir, reflectDir), 0.f), shininess);
+            vec3 specular = specularStrength * spec * lightColor;
+
+
+            vec3 result = (specular + diffuse + ambient) * objectColor;
             FragColor = vec4(result, 1.0);
         }
 )";

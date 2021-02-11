@@ -201,13 +201,19 @@ CameraMovingCalculator movingCalc;
 
 } // nm
 
-CameraSystem::CameraSystem()
+CameraSystem::CameraSystem(glm::vec3 cameraPos)
 {
+    movingCalc.cameraPos = cameraPos;
 }
 
 void CameraSystem::process(GLFWwindow* w)
 {
     movingCalc.processInput(w);
+}
+
+glm::vec3 CameraSystem::getCurrentPosition()
+{
+    return movingCalc.cameraPos;
 }
 
 float CameraSystem::getCurrentFOV()
