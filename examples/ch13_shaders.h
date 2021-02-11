@@ -11,6 +11,10 @@
  *
  *  ambient - is a simple analog of global illumination (complex model of light reflection from objects)
  *
+ *  diffuse - based on the angle of incidence of the light beam (check the angle between a light beam and a normal vector)
+ *      the more angle the fewer value of the color
+ *      the angle can be calculated by dot product (of normalized vectors)
+ *
  *
 */
 
@@ -21,14 +25,20 @@ const std::string basicLightingVS =
 R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec3 aNormal;
 
         uniform mat4 model;
         uniform mat4 view;
         uniform mat4 proj;
 
+        out vec3 Normal;
+        out vec3 FragPos; // in the world coord
+
         void main()
         {
             gl_Position = proj * view * model * vec4(aPos, 1.0f);
+            Normal = aNormal;
+            FragPos = vec3(model * vec4(aPos, 1.0));
         }
 )";
 
@@ -41,12 +51,24 @@ R"(
         uniform vec3 objectColor;
         uniform vec3 lightColor;
 
+        in vec3 Normal;
+        in vec3 FragPos;
+
+        uniform vec3 lightPos;
+
         void main()
         {
             float ambientStrength = 0.1f;
             vec3 ambient = ambientStrength * lightColor;
 
-            vec3 result = ambient * objectColor;
+            vec3 norm = normalize(Normal); // why normalize a normal vector??
+            // light's direction vector = light pos vector - fragment pos vector [LightPoint <--- FragmentPoint]
+            vec3 lightDir = normalize(lightPos - FragPos); // normalize to make a work easier
+
+            float diff = max(dot(norm, lightDir), 0.0); // prevent negative color value by max()
+            vec3 diffuse = diff * lightColor;
+
+            vec3 result = (diffuse + ambient) * objectColor;
             FragColor = vec4(result, 1.0);
         }
 )";

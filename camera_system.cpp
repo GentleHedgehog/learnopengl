@@ -18,6 +18,8 @@ struct CurrentEulerAngles
         front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
         front.y = sin(glm::radians(pitch));
         front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+        front = glm::normalize(front);
+
         return front;
     }
 
@@ -101,14 +103,17 @@ struct CameraMovingCalculator
 
     glm::vec3 cameraPos{0.f, 0.f, 3.f};
     glm::vec3 cameraFront{0.f, 0.f, -1.f};
-    glm::vec3 cameraUp{0.f, 1.f, 0.f};
+    glm::vec3 worldUp{0.f, 1.f, 0.f};
 
     bool isCursorEnabled = true;
     bool isFirstCall = true;
 
     glm::mat4 calculateLookAtMatrix()
     {        
-        cameraFront = glm::normalize(CurrentEulerAngles::getNewFront());
+        cameraFront = CurrentEulerAngles::getNewFront();
+
+        auto cameraRight = glm::normalize(glm::cross(cameraFront, worldUp));
+        auto cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 
 //        std::cout << "pos: x " << cameraPos.x << " y " << cameraPos.y << " z " << cameraPos.z << std::endl;
 //        std::cout << "front: x " << cameraFront.x << " y " << cameraFront.y << " z " << cameraFront.z << std::endl;
@@ -143,11 +148,11 @@ struct CameraMovingCalculator
         }
         else if (glfwGetKey(w, GLFW_KEY_A) == GLFW_PRESS)
         {
-            cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+            cameraPos -= cameraSpeed * glm::normalize(glm::cross(cameraFront, worldUp));
         }
         else if (glfwGetKey(w, GLFW_KEY_D) == GLFW_PRESS)
         {
-            cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, cameraUp));
+            cameraPos += cameraSpeed * glm::normalize(glm::cross(cameraFront, worldUp));
         }
         else if (glfwGetKey(w, GLFW_KEY_F2) == GLFW_PRESS)
         {
