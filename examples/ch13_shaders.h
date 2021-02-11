@@ -15,6 +15,15 @@
  *      the more angle the fewer value of the color
  *      the angle can be calculated by dot product (of normalized vectors)
  *
+ *      for working with normal vectors in world coordinates we should use 'normal matrix':
+ *          - normal matrix is 'the transponse of the inverse of the upper-left corner of the model matrix'
+ *          - normal matrix allow to apply model matrix to normal vectors without distortions
+ *              distortions might be arise from non-uniform scaling (inside model matrix)
+ *          - we dont need a translation for normal vectors (it cannot change their direction, and their positions dont matter)
+ *             so we need only 3x3 matrix for scaling and rotation
+ *
+ *      inversing matrix is a costly operation - avoid to do this operation inside a shader!
+ *
  *
 */
 
@@ -37,7 +46,7 @@ R"(
         void main()
         {
             gl_Position = proj * view * model * vec4(aPos, 1.0f);
-            Normal = aNormal;
+            Normal = mat3(transpose(inverse(model))) * aNormal;
             FragPos = vec3(model * vec4(aPos, 1.0));
         }
 )";
