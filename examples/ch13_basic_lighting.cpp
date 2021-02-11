@@ -111,7 +111,7 @@ void Ch13_BasicLighting::createSceneWithLightSource()
             static CameraSystem cs;
             cs.process(data.window);
 
-            glClearColor(0.f, 0.f, 0.f, 1.0f); // black
+            glClearColor(0.f, 0.5f, 0.f, 1.0f); // black
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
             texApplier.execute();

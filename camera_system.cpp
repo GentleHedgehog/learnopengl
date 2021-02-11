@@ -2,14 +2,14 @@
 
 #include <iostream>
 #include <chrono>
-
+#include "common_settings.h"
 
 namespace {
 
 struct CurrentEulerAngles
 {
     static inline float pitch{};
-    static inline float yaw{};
+    static inline float yaw = -90; // to look at the center
 //    static inline bool isFirstCall = true;
 
     static glm::vec3 getNewFront()
@@ -23,13 +23,35 @@ struct CurrentEulerAngles
 
     static void setNewPos(float x, float y)
     {
-        static float lastX = x, lastY = y;
+        static float lastX{}, lastY{};
+
+//        if (isFirstCall)
+//        {
+//            lastX = CommonSettings::width / 2;
+//            lastY = CommonSettings::height / 2;
+
+//            if (x > CommonSettings::width)
+//                lastX = x;
+//            if (y > CommonSettings::height)
+//                lastY = y;
+
+//            isFirstCall = false;
+//        }
+
+//        std::cout << "lastX " << lastX << std::endl;
+//        std::cout << "lastY " << lastY << std::endl;
+//        std::cout << "x " << x << std::endl;
+//        std::cout << "y " << y << std::endl;
 
         float sensitivity = 0.05f; // to prevent sharp movements
         float xoffset = (x - lastX) * sensitivity;
         float yoffset = (lastY - y) * sensitivity;
         lastX = x;
         lastY = y;
+
+//        std::cout << "xoffset " << xoffset << std::endl;
+//        std::cout << "yoffset " << yoffset << std::endl;
+
 
         addOffset(xoffset, yoffset);
     }
@@ -81,12 +103,16 @@ struct CameraMovingCalculator
     glm::vec3 cameraFront{0.f, 0.f, -1.f};
     glm::vec3 cameraUp{0.f, 1.f, 0.f};
 
-    bool isFirstCall = true;
     bool isCursorEnabled = true;
+    bool isFirstCall = true;
 
     glm::mat4 calculateLookAtMatrix()
-    {
+    {        
         cameraFront = glm::normalize(CurrentEulerAngles::getNewFront());
+
+//        std::cout << "pos: x " << cameraPos.x << " y " << cameraPos.y << " z " << cameraPos.z << std::endl;
+//        std::cout << "front: x " << cameraFront.x << " y " << cameraFront.y << " z " << cameraFront.z << std::endl;
+//        std::cout << "up: x " << cameraUp.x << " y " << cameraUp.y << " z " << cameraUp.z << std::endl;
 
         return glm::lookAt(cameraPos,
         // ensures that camera keeps looking at the target direction (when we are moving):
@@ -98,25 +124,9 @@ struct CameraMovingCalculator
     {
         if (isFirstCall)
         {
+            init(w);
             isFirstCall = false;
-            // it should hide the cursor and capture it
-            glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-            isCursorEnabled = false;
-
-            auto cbMove = [](GLFWwindow* w, double xpos, double ypos)
-            {(void)w;
-                CurrentEulerAngles::setNewPos(xpos, ypos);
-            };
-            glfwSetCursorPosCallback(w, cbMove);
-
-            auto cbScroll = [](GLFWwindow* w, double x, double y)
-            {(void)w; (void)x;
-                // y - amount of scrolling vertically:
-                CurrentZoom::setVerticalScrolling(y);
-            };
-            glfwSetScrollCallback(w, cbScroll);
         }
-
 
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -158,6 +168,27 @@ struct CameraMovingCalculator
             }
         }
     }
+
+    void init(GLFWwindow* w)
+    {
+        // it should hide the cursor and capture it
+        glfwSetInputMode(w, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetCursorPos(w, CommonSettings::width/2, CommonSettings::height/2);
+        isCursorEnabled = false;
+
+        auto cbMove = [](GLFWwindow* w, double xpos, double ypos)
+        {(void)w;
+            CurrentEulerAngles::setNewPos(xpos, ypos);
+        };
+        glfwSetCursorPosCallback(w, cbMove);
+
+        auto cbScroll = [](GLFWwindow* w, double x, double y)
+        {(void)w; (void)x;
+            // y - amount of scrolling vertically:
+            CurrentZoom::setVerticalScrolling(y);
+        };
+        glfwSetScrollCallback(w, cbScroll);
+    }
 };
 
 // for free moving with WSAD keys on keyboard:
@@ -167,7 +198,6 @@ CameraMovingCalculator movingCalc;
 
 CameraSystem::CameraSystem()
 {
-
 }
 
 void CameraSystem::process(GLFWwindow* w)
@@ -181,11 +211,6 @@ float CameraSystem::getCurrentFOV()
 }
 
 glm::mat4 CameraSystem::getCurrentViewMatrix()
-{
-    return movingCalc.calculateLookAtMatrix();
-}
-
-glm::mat4 CameraSystem::getCurrentProjectionMatrix()
 {
     return movingCalc.calculateLookAtMatrix();
 }
