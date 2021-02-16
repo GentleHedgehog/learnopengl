@@ -4,7 +4,7 @@
 
 //#include "examples/ch5_hello_triangle.h"
 //#include "examples/ch6_shaders_examples.h"
-//#include "examples/ch7_textures.h"
+#include "examples/ch7_textures.h"
 //#include "examples/ch8_transformation.h"
 //#include "examples/ch9_coord_system.h"
 //#include "examples/ch10_camera.h"

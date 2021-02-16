@@ -125,6 +125,7 @@ void Ch9_CoordSystem::createCubeIn3DWorld()
 
         // create the array of vertices attributes:
         float vertices[] = {
+             // vertex pos        // texture coords
             -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
              0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
              0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -231,7 +232,6 @@ void Ch9_CoordSystem::createCubeIn3DWorld()
 
                 td.execute();
             }
-
         };
     }
 }

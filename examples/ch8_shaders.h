@@ -7,7 +7,7 @@
  *
  * vector len: len = sqrt(x^2 + y^2 + z^2)
  *
- * normalization: n = v / len ( n has len == 1)
+ * normalization: n = v / len = (x/len, y/len, z/len) ( n has len == 1)
  *
  * dot product: v * k = /v/ * /k/ * cos(teta) = x * x2 + y * y2 + z * z2
  *
@@ -17,6 +17,17 @@
  * produces third vector that is orthogonal to input vectors
  *
  * v x k = ((y * z2 - z * y2), (z * x2 - x * z2), (x * y2 - y * x2))
+ *
+ * each component == determinant == area of parallelogram (maid from two vectors)
+ * v ~ pointing finger
+ * k ~ middle finger
+ * result ~ thumb  (RHS)
+ * if we change: k x v -> LHS
+ *
+ * v x k = - (v x k)
+ *
+ * v x k = /v/ * /k/ * sin(teta)
+ *
  *
  * matrices:
  *

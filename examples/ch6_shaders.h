@@ -7,7 +7,7 @@
  *
  * // limited by hardware (GL_MAX_VERTEX_ATTRIBS) number of attributes:
  * layout (location = 0) in type in_variable_name; // also known as a vertex attribute (4-component)
- * // the position vaar has attribute position 0
+ * // the position var has the attribute position equal to 0
  * ..
  *
  * out type out_var_name;

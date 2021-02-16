@@ -14,7 +14,7 @@
  *
  * (1, 1, 1) * (1, 0.5, 1) = (1, 0.5, 1)
  *
- * if we would use grean color:
+ * if we would use green color:
  * (0, 1, 0) * (1, 0.5, 1) = (0, 0.5, 0) // reflect dark-green color
  *
  * for the light source we should create a separate shader

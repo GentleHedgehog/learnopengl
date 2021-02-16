@@ -18,9 +18,9 @@
  *
  *      for working with normal vectors in world coordinates we should use 'normal matrix':
  *          - normal matrix is 'the transponse of the inverse of the upper-left corner of the model matrix'
- *          - normal matrix allow to apply model matrix to normal vectors without distortions
- *              distortions might be arise from non-uniform scaling (inside model matrix)
- *          - we dont need a translation for normal vectors (it cannot change their direction, and their positions dont matter)
+ *          - normal matrix allow to apply a model matrix to the normal vectors without distortions
+ *              distortions might arise from non-uniform scaling (inside a model matrix)
+ *          - we dont need a translation for the normal vectors (it cannot change their direction, and their positions dont matter)
  *             so we need only 3x3 matrix for scaling and rotation
  *
  *      inversing matrix is a costly operation - avoid to do this operation inside a shader!

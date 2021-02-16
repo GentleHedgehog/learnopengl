@@ -67,8 +67,10 @@ void Ch7_Textures::putTwoTexturesOnRectangle()
     auto image2 = std::make_shared<ImageContainer>("awesomeface.png", true);
     if (image->getData() && image2->getData())
     {
-        texApplier.prepareData(image, 0);
-        texApplier2.prepareData(image2, 1);
+        const unsigned int TexLocation = 0;
+        const unsigned int TexLocation2 = 1;
+        texApplier.prepareData(image, TexLocation);
+        texApplier2.prepareData(image2, TexLocation2);
 
         // create the array of vertices attributes:
         float vertices[] = {
@@ -95,8 +97,8 @@ void Ch7_Textures::putTwoTexturesOnRectangle()
 
         sp.use();
         // set uniform values once:
-        sp.setInt("ourTexture1", 0);
-        sp.setInt("ourTexture2", 1);
+        sp.setInt("ourTexture1", TexLocation);
+        sp.setInt("ourTexture2", TexLocation2);
 
         cb = [this]()
         {
