@@ -112,12 +112,17 @@ void Ch13_BasicLighting::createSceneWithLightSource()
         cb = [this](const nOpenglFramework::OpenglContextData& data)
         {
             static const glm::vec3 scaleForCube(0.2f, 0.2f, 0.2f);
-            static const glm::vec3 lightPos(3.2f, 1.0f, 5.0f);
+            static glm::vec3 lightPos(3.2f, 1.0f, 5.0f);
+
+            auto radius = 10;
+            lightPos.x = sin((glfwGetTime())) * radius;
+            lightPos.z = cos((glfwGetTime())) * radius;
+
 
             static CameraSystem cs(cameraPos);
             cs.process(data.window);
 
-            glClearColor(0.0f, 0.25f, 0.f, 1.0f); // dark green
+            glClearColor(0.0f, 0.2f, 0.f, 1.0f); // dark green
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
             texApplier.execute();
