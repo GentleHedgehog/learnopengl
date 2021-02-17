@@ -9,7 +9,8 @@
 //#include "examples/ch9_coord_system.h"
 //#include "examples/ch10_camera.h"
 //#include "examples/ch12_colors.h"
-#include "examples/ch13_basic_lighting.h"
+//#include "examples/ch13_basic_lighting.h"
+#include "examples/ch14_materials.h"
 
 
 using namespace std;
@@ -58,7 +59,8 @@ int main()
 //    Ch9_CoordSystem example;
 //    Ch10_Camera example;
 //    Ch12_Colors example;
-    Ch13_BasicLighting example;
+//    Ch13_BasicLighting example;
+    Ch14_Materials example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);
