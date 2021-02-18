@@ -29,6 +29,6 @@ private:
 
     nOpenglFramework::WorkerCallbackType cb = nullptr;
 
-    void createSceneWithLightSource();
+    void createSceneWithMaterial();
 };
 

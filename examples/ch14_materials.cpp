@@ -32,10 +32,10 @@ void printMatrix4(const glm::mat4& mat, const std::string& name = "")
 
 Ch14_Materials::Ch14_Materials()
 {
-    createSceneWithLightSource();
+    createSceneWithMaterial();
 }
 
-void Ch14_Materials::createSceneWithLightSource()
+void Ch14_Materials::createSceneWithMaterial()
 {
     auto image = std::make_shared<ImageContainer>("container.jpg");
     auto image2 = std::make_shared<ImageContainer>("awesomeface.png", true);
@@ -103,7 +103,15 @@ void Ch14_Materials::createSceneWithLightSource()
         sp.createAndLink(materialsVS, materialsFS);
         sp.use();
         sp.setVec3("objectColor", glm::vec3(1.0f, 0.5f, 0.31f));
-        sp.setVec3("lightColor", glm::vec3(1.f, 1.f, 1.f));
+
+        sp.setVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        sp.setVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darken the light a bit
+        sp.setVec3("light.specular", glm::vec3(1.f, 1.f, 1.f));
+
+        sp.setVec3("material.ambient", glm::vec3{1.0f, 0.5f, 0.31f});
+        sp.setVec3("material.diffuse", glm::vec3{1.0f, 0.5f, 0.31f});
+        sp.setVec3("material.specular", glm::vec3{0.5f, 0.5f, 0.5f});
+        sp.setFloat("material.shininess", 32.0f);
 
         glEnable(GL_DEPTH_TEST);
 
@@ -114,20 +122,30 @@ void Ch14_Materials::createSceneWithLightSource()
             static const glm::vec3 scaleForCube(0.2f, 0.2f, 0.2f);
             static glm::vec3 lightPos(3.2f, 1.0f, 5.0f);
 
-            auto radius = 10;
-            lightPos.x = sin((glfwGetTime())) * radius;
-            lightPos.z = cos((glfwGetTime())) * radius;
-
+//            auto radius = 10;
+//            lightPos.x = sin((glfwGetTime())) * radius;
+//            lightPos.z = cos((glfwGetTime())) * radius;
 
             static CameraSystem cs(cameraPos);
             cs.process(data.window);
 
-            glClearColor(0.0f, 0.2f, 0.f, 1.0f); // dark green
+            glClearColor(0.0f, 0.f, 0.f, 1.0f); // black
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
             texApplier.execute();
             texApplier2.execute();
             sp.use();
+
+
+            static glm::vec3 lightColor;
+            lightColor.x = sin(glfwGetTime()* 2.0f);
+            lightColor.y = sin(glfwGetTime()* 0.7f);
+            lightColor.z = sin(glfwGetTime()* 1.3f);
+            auto diffuseColor = lightColor * glm::vec3(0.5f);
+            auto ambientColor = diffuseColor * glm::vec3(0.3f);
+            sp.setVec3("light.ambient", ambientColor);
+            sp.setVec3("light.diffuse", diffuseColor);
+
 
             glm::mat4 proj(1.0f);
             proj = glm::perspective(glm::radians(cs.getCurrentFOV()), CommonSettings::getAspectRatio(), 0.1f, 100.f);
@@ -137,7 +155,7 @@ void Ch14_Materials::createSceneWithLightSource()
 
             glm::mat4 model(1.0f);
             sp.setMat4("model", model);
-            sp.setVec3("lightPos", lightPos);
+            sp.setVec3("light.position", lightPos );
             sp.setVec3("viewPos", cs.getCurrentPosition());
 
             td.execute();
