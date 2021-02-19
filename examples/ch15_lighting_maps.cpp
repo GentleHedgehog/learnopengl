@@ -37,11 +37,15 @@ Ch15_LightingMaps::Ch15_LightingMaps()
 
 void Ch15_LightingMaps::createSceneWithMaterial()
 {
-    auto image = std::make_shared<ImageContainer>("container.jpg");// "container2.png"
-    if (image->getData())
+    auto imageDiffuse = std::make_shared<ImageContainer>("container2.png");
+    auto imageSpecular = std::make_shared<ImageContainer>("container2_specular.png");
+
+    if (imageDiffuse->getData() && imageSpecular->getData())
     {
-        const unsigned int texUnit = 0;
-        texApplier.prepareData(image, texUnit);
+        const unsigned int texUnitDiffuse = 0;
+        const unsigned int texUnitSpecular = 1;
+        texApplier.prepareData(imageDiffuse, texUnitDiffuse);
+        texApplier2.prepareData(imageSpecular, texUnitSpecular);
 
         // create the array of vertices attributes:
         float vertices[] = {
@@ -106,9 +110,11 @@ void Ch15_LightingMaps::createSceneWithMaterial()
         sp.setVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
         sp.setVec3("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darken the light a bit
         sp.setVec3("light.specular", glm::vec3(1.f, 1.f, 1.f));
-        // set tex unit:
-        sp.setInt("material.diffuse", texUnit);
-        sp.setVec3("material.specular", glm::vec3{0.5f, 0.5f, 0.5f});
+
+        // set tex units:
+        sp.setInt("material.diffuse", texUnitDiffuse);
+        sp.setInt("material.specular", texUnitSpecular);
+
         sp.setFloat("material.shininess", 32.0f);
 
         glEnable(GL_DEPTH_TEST);
@@ -144,6 +150,7 @@ void Ch15_LightingMaps::createSceneWithMaterial()
             sp.setVec3("viewPos", cs.getCurrentPosition());
 
             texApplier.execute();
+            texApplier2.execute();
             td.execute();
 
             spLighting.use();            

@@ -13,6 +13,9 @@
  * Ambient color is in almost all cases equal to the diffuse color,
  * but if you want to use it, use another texture for ambient values
  *
+ * Using tools like Photoshop or Gimp it is relatively easy to transform a diffuse texture
+ * to a specular image like this by cutting out some parts,
+ * transforming it to black and white and increasing the brightness/contrast.
  *
 */
 
@@ -49,7 +52,7 @@ R"(
 
         struct Material{
             sampler2D diffuse;
-            vec3 specular;
+            sampler2D specular;
             float shininess;
         };
 
@@ -77,10 +80,11 @@ R"(
 
         void main()
         {
-            vec3 texel = vec3(texture(material.diffuse, TexCoords));
+            vec3 texelDiffuse = vec3(texture(material.diffuse, TexCoords));
+            vec3 texelSpecular = texture(material.specular, TexCoords).rgb;
 
             // AMBIENT (equal to diffuse):
-            vec3 ambient = texel * light.ambient;
+            vec3 ambient = texelDiffuse * light.ambient;
 
             // DIFFUSE (from texture):
 
@@ -89,7 +93,7 @@ R"(
             vec3 lightDir = normalize(light.position - FragPos); // normalize to make a work easier
 
             float diff = max(dot(norm, lightDir), 0.0); // prevent negative color value by max()
-            vec3 diffuse = (diff * texel) * light.diffuse;
+            vec3 diffuse = (diff * texelDiffuse) * light.diffuse;
 
             // SPECULAR:
             vec3 viewDir = normalize(viewPos - FragPos);
@@ -98,10 +102,9 @@ R"(
             vec3 reflectDir = reflect(-lightDir, norm);
 
             float spec = pow(max(dot(viewDir, reflectDir), 0.f), material.shininess);
-            vec3 specular = (spec * material.specular) * light.specular;
+            vec3 specular = (spec * texelSpecular) * light.specular;
 
-            vec3 result = (specular + diffuse + ambient) * texel;
-            FragColor = vec4(result, 1.0);
+            FragColor = vec4(specular + diffuse + ambient, 1.0);
         }
 )";
 

@@ -25,6 +25,7 @@ private:
     TrianglesDrawerEBO tdEbo;
     TrianglesDrawer td;
     TextureApplier texApplier;
+    TextureApplier texApplier2;
 
     nOpenglFramework::WorkerCallbackType cb = nullptr;
 
