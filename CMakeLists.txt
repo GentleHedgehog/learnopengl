@@ -36,6 +36,8 @@ add_executable(lessonProgram
     examples/ch13_shaders.h
     examples/ch14_materials.cpp examples/ch14_materials.h
     examples/ch14_shaders.h
+    examples/ch15_lighting_maps.cpp examples/ch15_lighting_maps.h
+    examples/ch15_shaders.h
     )
 
 target_include_directories(lessonProgram

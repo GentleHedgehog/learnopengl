@@ -10,7 +10,8 @@
 //#include "examples/ch10_camera.h"
 //#include "examples/ch12_colors.h"
 //#include "examples/ch13_basic_lighting.h"
-#include "examples/ch14_materials.h"
+//#include "examples/ch14_materials.h"
+#include "examples/ch15_lighting_maps.h"
 
 
 using namespace std;
@@ -60,7 +61,8 @@ int main()
 //    Ch10_Camera example;
 //    Ch12_Colors example;
 //    Ch13_BasicLighting example;
-    Ch14_Materials example;
+//    Ch14_Materials example;
+    Ch15_LightingMaps example;
 
     std::cout << "start run" << std::endl;
     fw.run(example);
