@@ -24,8 +24,9 @@ private:
     ShaderProgram spLighting;
     TrianglesDrawerEBO tdEbo;
     TrianglesDrawer td;
-    TextureApplier texApplier;
-    TextureApplier texApplier2;
+//    TextureApplier t1;
+//    TextureApplier t2;
+    TextureVector texAppliers;
 
     nOpenglFramework::WorkerCallbackType cb = nullptr;
 

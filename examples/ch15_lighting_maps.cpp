@@ -39,13 +39,16 @@ void Ch15_LightingMaps::createSceneWithMaterial()
 {
     auto imageDiffuse = std::make_shared<ImageContainer>("container2.png");
     auto imageSpecular = std::make_shared<ImageContainer>("container2_specular.png");
+    auto imageEmission = std::make_shared<ImageContainer>("matrix.jpg");
 
-    if (imageDiffuse->getData() && imageSpecular->getData())
+    if (imageDiffuse->getData() && imageSpecular->getData() && imageEmission->getData())
     {
         const unsigned int texUnitDiffuse = 0;
         const unsigned int texUnitSpecular = 1;
-        texApplier.prepareData(imageDiffuse, texUnitDiffuse);
-        texApplier2.prepareData(imageSpecular, texUnitSpecular);
+        const unsigned int texUnitEmission = 2;
+        texAppliers.addTexture(imageDiffuse, texUnitDiffuse);
+        texAppliers.addTexture(imageSpecular, texUnitSpecular);
+        texAppliers.addTexture(imageEmission, texUnitEmission);
 
         // create the array of vertices attributes:
         float vertices[] = {
@@ -114,6 +117,7 @@ void Ch15_LightingMaps::createSceneWithMaterial()
         // set tex units:
         sp.setInt("material.diffuse", texUnitDiffuse);
         sp.setInt("material.specular", texUnitSpecular);
+        sp.setInt("material.emission", texUnitEmission);
 
         sp.setFloat("material.shininess", 32.0f);
 
@@ -149,8 +153,8 @@ void Ch15_LightingMaps::createSceneWithMaterial()
             sp.setVec3("light.position", lightPos );
             sp.setVec3("viewPos", cs.getCurrentPosition());
 
-            texApplier.execute();
-            texApplier2.execute();
+
+            texAppliers.execute();
             td.execute();
 
             spLighting.use();            

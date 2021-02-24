@@ -17,6 +17,8 @@
  * to a specular image like this by cutting out some parts,
  * transforming it to black and white and increasing the brightness/contrast.
  *
+ * emission map - looks like it emits light itself
+ *
 */
 
 
@@ -53,6 +55,7 @@ R"(
         struct Material{
             sampler2D diffuse;
             sampler2D specular;
+            sampler2D emission;
             float shininess;
         };
 
@@ -81,7 +84,7 @@ R"(
         void main()
         {
             vec3 texelDiffuse = vec3(texture(material.diffuse, TexCoords));
-            vec3 texelSpecular = texture(material.specular, TexCoords).rgb;
+            vec3 texelSpecular = vec3(texture(material.specular, TexCoords));
 
             // AMBIENT (equal to diffuse):
             vec3 ambient = texelDiffuse * light.ambient;
@@ -104,7 +107,14 @@ R"(
             float spec = pow(max(dot(viewDir, reflectDir), 0.f), material.shininess);
             vec3 specular = (spec * texelSpecular) * light.specular;
 
-            FragColor = vec4(specular + diffuse + ambient, 1.0);
+            vec3 texelEmission = vec3(0.0f);
+            float blackBoxAreaColor = 0.f;
+            if (texelSpecular.r == blackBoxAreaColor)
+            {
+                texelEmission = texture(material.emission, TexCoords).rgb;
+            }
+
+            FragColor = vec4(specular + diffuse + ambient + texelEmission, 1.0);
         }
 )";
 

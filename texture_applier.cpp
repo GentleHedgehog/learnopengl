@@ -1,15 +1,19 @@
 #include "texture_applier.h"
 
+#include <iostream>
+
 #include <GLFW/glfw3.h>
 
 TextureApplier::TextureApplier()
 {
     glGenTextures(1, &texture); // 1 - count of textures, &texture - begin of the id array
+    std::cout << "gen tex: texture = " << texture << std::endl;
 }
 
 TextureApplier::~TextureApplier()
 {
     glDeleteTextures(1, &texture);
+    std::cout << "delete tex: texture = " << texture << std::endl;
 }
 
 bool TextureApplier::loadFromRGB(std::shared_ptr<ImageContainer> image)
@@ -74,6 +78,35 @@ void TextureApplier::execute()
      *  glBindTexture(GL_TEXTURE_2D, texture);
     */
 
+    std::cout << "execute tex: unit = " << textureUnit << ", texture = " << texture << std::endl;
+
     glActiveTexture(GL_TEXTURE0 + textureUnit);
     glBindTexture(GL_TEXTURE_2D, texture);
+}
+
+bool TextureVector::addTexture(std::shared_ptr<ImageContainer> image, unsigned int textureUnit)
+{
+    // it is a smart pointer ( due to reallocations of the vector )
+    auto applier = std::make_shared<TextureApplier>();
+    bool ok = applier->prepareData(image, textureUnit);
+
+    if (ok)
+        appliers.push_back(applier);
+
+    std::cout << ">>> add new tex to vector: " << image->getName() << std::endl;
+    std::cout << image->getName() << std::endl;
+    std::cout << "unit: " << textureUnit << std::endl;
+    std::cout << "result: " << std::boolalpha << ok << std::endl;
+    std::cout << "all tex cout: " << appliers.size() << std::endl << std::endl;
+
+    return ok;
+}
+
+void TextureVector::execute()
+{
+    std::cout << "====" << std::endl;
+    for(auto& app : appliers)
+    {
+        app->execute();
+    }
 }

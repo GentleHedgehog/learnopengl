@@ -14,6 +14,8 @@ ImageContainer::ImageContainer(const std::string &fileName, bool isFlipOnLoad)
 {
     stbi_set_flip_vertically_on_load(isFlipOnLoad);
 
+    name = fileName;
+
     auto d = stbi_load(fileName.c_str(), &width, &height, &nrChannels, 0);
     if (d)
     {
@@ -51,6 +53,11 @@ const unsigned char *ImageContainer::getData() const
 int ImageContainer::getChannels() const
 {
     return nrChannels;
+}
+
+std::string ImageContainer::getName() const
+{
+    return name;
 }
 
 int ImageContainer::getWidth() const

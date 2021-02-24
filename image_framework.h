@@ -15,9 +15,12 @@ public:
     int getHeight() const;
     int getChannels() const;
 
+    std::string getName() const;
+
 private:
     std::optional<unsigned char*> data{};
     int width{}, height{}, nrChannels{};
+    std::string name;
 };
 
 class ImageFramework

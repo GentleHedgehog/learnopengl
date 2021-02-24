@@ -2,6 +2,7 @@
 
 #include "image_framework.h"
 #include <memory>
+#include <vector>
 #include <glad/glad.h>
 
 class TextureApplier
@@ -42,3 +43,16 @@ private:
     unsigned int textureUnit{};
 };
 
+
+class TextureVector
+{
+public:
+    TextureVector() = default;
+
+    bool addTexture(std::shared_ptr<ImageContainer> image, unsigned int textureUnit);
+
+    void execute();
+
+private:
+    std::vector<std::shared_ptr<TextureApplier>> appliers;
+};
