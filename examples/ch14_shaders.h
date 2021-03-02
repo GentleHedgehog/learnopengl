@@ -9,9 +9,9 @@
  *
  *  to restrict the light influence we create structure for light properties (position, phong's components):
  *  each component defines an intensity
- *  ambient - set it to low intensity to decrease its domination
- *  diffuse - set to the exact color we would like a light to have (often white)
- *  specular - is usually kept at vec3(1.0) shining at full intensity
+ *      ambient - set it to low intensity to decrease its domination
+ *      diffuse - set to the exact color we would like a light to have (often white)
+ *      specular - is usually kept at vec3(1.0) shining at full intensity
  *
  *
 */
